@@ -2,7 +2,19 @@
   "permissions": {
     "allow": [
       "Bash(npm --version)",
-      "PowerShell(gh --version)"
+      "PowerShell(gh --version)",
+      "PowerShell($ErrorActionPreference='SilentlyContinue'; node --version; npm --version; \"---\"; Get-Command node; \"---paths---\"; Test-Path \"C:\\\\Program Files\\\\nodejs\\\\node.exe\"; Test-Path \"$env:LOCALAPPDATA\\\\nvm\"; Test-Path \"$env:ProgramFiles\\\\nodejs\")",
+      "PowerShell($ErrorActionPreference='SilentlyContinue'; \\(Get-Command winget\\).Source; \"---version---\"; winget --version)",
+      "PowerShell(winget install --id OpenJS.NodeJS.LTS -e --accept-source-agreements --accept-package-agreements)",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" create astro@latest . -- --template minimal --typescript strict --no-install --no-git --skip-houston --yes)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:4321/)",
+      "Bash(curl -s http://localhost:4321/)",
+      "PowerShell(Get-CimInstance Win32_Process -Filter \"Name = 'node.exe'\" | Where-Object { $_.CommandLine -match 'astro' } | ForEach-Object { \"Stopping PID $\\($_.ProcessId\\): $\\($_.CommandLine.Substring\\(0,[Math]::Min\\(60,$_.CommandLine.Length\\)\\)\\)\"; Stop-Process -Id $_.ProcessId -Force })",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" auth status)",
+      "Bash(git ls-remote *)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo view stevensT/personal-site --json name,visibility,isEmpty)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo view stevensT/personal-site --json defaultBranchRef)",
+      "Bash(git add *)"
     ]
   }
 }

@@ -12,12 +12,16 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 0 — Prerequisites.
-- **Done so far:** Planning only. Spec written. Decisions locked (stack, repo
-  `personal-site` public under GitHub user `stevensT`, domain `stanferd.dev`).
+- **Current phase:** Phase 2 — Styling (Phases 0 & 1 complete).
+- **Done so far:** Planning + Phases 0–1. Spec written. Decisions locked (stack,
+  repo `personal-site` public under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
-- **Blocked on / next step:** **Install Node.js LTS** — nothing can be scaffolded
-  or run until `node`/`npm` work. (winget install was started then cancelled.)
+  **Node.js LTS v24.16.0 + npm 11.13.0 installed** (winget, on persisted PATH).
+  **Astro 6.4.5 project scaffolded into the repo root** (minimal template, strict
+  TS); `npm install` clean; `npm run dev` verified serving the starter page.
+- **Blocked on / next step:** **Phase 2 — add Tailwind** via `npx astro add tailwind`,
+  then prove a Tailwind utility class visibly styles an element. (Not yet committed
+  to git — see Phase 1 work; commit + push when ready.)
 - **Heads-up:** freshly-installed tools may not appear in an already-open
   terminal (PATH is read at launch) — open a new terminal or call by full path.
 
@@ -142,17 +146,22 @@ in layers. Each phase ends with something you can see in the browser.
 ## 6. Task Checklist
 
 ### Phase 0 — Prerequisites
-- [ ] Install Node.js LTS
-- [ ] Verify `node --version` and `npm --version` work in a fresh terminal
-- [ ] Confirm the latest stable Astro version, and update CLAUDE.md's "Astro 6"
-      line to match reality
+- [x] Install Node.js LTS — v24.16.0 via `winget` (npm 11.13.0)
+- [x] Verify `node --version` and `npm --version` work in a fresh terminal —
+      confirmed on persisted PATH; new terminals will find them
+- [x] Confirm the latest stable Astro version, and update CLAUDE.md's "Astro 6"
+      line to match reality — latest stable is **6.4.5**; "Astro 6" is already
+      correct (6.x), so CLAUDE.md left as-is
 
 ### Phase 1 — Scaffold
-- [ ] Run the Astro project creator (minimal template, TypeScript strict)
-- [ ] Verify `npm install` completes
-- [ ] Verify `npm run dev` serves the starter page in the browser
-- [ ] Initialize a git repository (so work is version-controlled / undoable)
-- [ ] Add a sensible `.gitignore` (node_modules, dist, etc.)
+- [x] Run the Astro project creator (minimal template, TypeScript strict) —
+      scaffolded into repo root; Astro ^6.4.5, tsconfig extends `.../strict`
+- [x] Verify `npm install` completes — 253 packages, 0 vulnerabilities
+- [x] Verify `npm run dev` serves the starter page in the browser —
+      HTTP 200 at http://localhost:4321, `<h1>Astro</h1>`, Astro v6.4.5
+- [x] Initialize a git repository — repo already initialized (used `--no-git`)
+- [x] Add a sensible `.gitignore` — Astro's covers node_modules/, dist/,
+      .astro/, .env (verified via `git check-ignore`)
 
 ### Phase 2 — Styling
 - [ ] Add Tailwind via Astro's official integration
@@ -217,5 +226,6 @@ in layers. Each phase ends with something you can see in the browser.
 
 ## 8. Notes
 
-- We are currently **paused at Phase 0**: Node.js install was started, then
-  cancelled. This is the next thing to resolve before any code.
+- **Phase 0 complete.** Node.js LTS v24.16.0 / npm 11.13.0 installed via winget
+  and verified on the persisted PATH. Next up is Phase 1 — scaffolding the Astro
+  project.
