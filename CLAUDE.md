@@ -12,6 +12,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Developer Context
 I am new to software engineering. Explain your reasoning when making architectural decisions. Flag anything I should learn or understand before moving on. Don't assume I know the "obvious" approach.
 
+I work across 3 computers — a desktop (preferred, bigger screen) and 2 laptops for travel — and I travel frequently. Projects must move between machines via Git/GitHub, never file-sync (e.g. OneDrive). Because of this, durable context belongs in committed files like this one, not in machine-local memory.
+
+## Workflow
+- Write the plan/spec to `tasks/todo.md` and get my approval before writing code.
+- Keep the "Where We Left Off" block at the top of `tasks/todo.md` current.
+- At the end of a work session, update that block, then commit (and push when a
+  remote exists) so I can resume on any machine via `git pull`.
+
 ## Project Status
 
 Repo is not yet scaffolded — only this CLAUDE.md exists. No `package.json`, no

@@ -14,7 +14,9 @@
       "Bash(git ls-remote *)",
       "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo view stevensT/personal-site --json name,visibility,isEmpty)",
       "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo view stevensT/personal-site --json defaultBranchRef)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m 'Scaffold Astro project \\(Phases 0-1\\) *)",
+      "Bash(git push *)"
     ]
   }
 }
