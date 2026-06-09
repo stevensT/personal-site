@@ -5,6 +5,24 @@
 
 ---
 
+## 0. Where We Left Off  ← read this first when resuming
+
+> Update this at the end of every work session, then commit + push. On a new
+> machine: `git pull`, open Claude Code, say "read tasks/todo.md and continue."
+
+- **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
+  OneDrive; use Git/GitHub — not file-sync — to move between computers).
+- **Current phase:** Phase 0 — Prerequisites.
+- **Done so far:** Planning only. Spec written. Decisions locked (stack, repo
+  `personal-site` public under GitHub user `stevensT`, domain `stanferd.dev`).
+  Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
+- **Blocked on / next step:** **Install Node.js LTS** — nothing can be scaffolded
+  or run until `node`/`npm` work. (winget install was started then cancelled.)
+- **Heads-up:** freshly-installed tools may not appear in an already-open
+  terminal (PATH is read at launch) — open a new terminal or call by full path.
+
+---
+
 ## 1. Project Goal
 
 A fast, lightweight **personal website** for Trevor Stevens — a tech enthusiast
