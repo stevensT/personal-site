@@ -14,11 +14,16 @@ I am new to software engineering. Explain your reasoning when making architectur
 
 I work across 3 computers — a desktop (preferred, bigger screen) and 2 laptops for travel — and I travel frequently. Projects must move between machines via Git/GitHub, never file-sync (e.g. OneDrive). Because of this, durable context belongs in committed files like this one, not in machine-local memory.
 
+Note on my background: I'm new to *software development* specifically, not to IT in general. I have a networking/sysadmin/cybersecurity background (B.A.S. in Network Operations; A.A.S. in Systems Administration/Networking with a cybersecurity concentration) and run a home lab. Calibrate accordingly — I'm comfortable with systems, networking, and the command line, so don't over-explain those; do explain software-development and language/framework concepts.
+
 ## Workflow
 - Write the plan/spec to `tasks/todo.md` and get my approval before writing code.
 - Keep the "Where We Left Off" block at the top of `tasks/todo.md` current.
-- At the end of a work session, update that block, then commit (and push when a
-  remote exists) so I can resume on any machine via `git pull`.
+- Don't commit or push automatically. Commit only when I ask; push only when I
+  explicitly say so. I often want to review changes before they're committed.
+- At the end of a work session, update the "Where We Left Off" block. Then, once
+  I've asked to commit, remember that pushing is what lets me resume on another
+  machine via `git pull` — so prompt me to push before I switch computers.
 
 ## Project Status
 
