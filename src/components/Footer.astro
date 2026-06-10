@@ -2,7 +2,8 @@
 /**
  * Footer — site-wide footer, rendered at the bottom of every page by BaseLayout.
  *
- * Shows the current year and a contact link.
+ * Shows the current year and contact info (Instagram). This is where contact
+ * lives — there is no separate Contact page by design.
  *
  * No props.
  */
@@ -18,6 +19,18 @@ const year = new Date().getFullYear();
     class="max-w-3xl mx-auto px-4 py-6 flex justify-between text-sm text-gray-500"
   >
     <span>© {year} Trevor Stevens</span>
-    <a href="/contact" class="hover:text-gray-900">Contact</a>
+    <!--
+      External link: target=_blank opens a new tab; rel="me" declares this as
+      Trevor's own profile (identity); noopener/noreferrer are security hygiene
+      for any new-tab external link.
+    -->
+    <a
+      href="https://instagram.com/stevenstrevor"
+      target="_blank"
+      rel="me noopener noreferrer"
+      class="hover:text-gray-900"
+    >
+      Instagram @stevenstrevor
+    </a>
   </div>
 </footer>

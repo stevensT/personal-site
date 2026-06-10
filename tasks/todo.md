@@ -12,18 +12,18 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 4 — Static pages (Phases 0–3 complete).
-- **Done so far:** Planning + Phases 0–3. Spec written. Decisions locked (stack,
+- **Current phase:** Phase 5 — Blog (Phases 0–4 complete).
+- **Done so far:** Planning + Phases 0–4. Spec written. Decisions locked (stack,
   repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
   **Node.js LTS v24.16.0 + npm 11.13.0 installed** (winget, on persisted PATH).
   **Astro 6.4.5 scaffolded into repo root** (minimal template, strict TS).
-  **Tailwind v4 added**, imported via BaseLayout. **Shared layout built:**
-  `BaseLayout` (title/description props, sticky footer) + `Nav` (all 5 links) +
-  `Footer` (build-time year); `index.astro` uses the layout. Verified rendering.
-- **Blocked on / next step:** **Phase 3 changes are uncommitted — awaiting Trevor's
-  review** (he asked to pause before committing). After that: **Phase 4** — build the
-  About, Projects, and Contact pages (Home already done) using `BaseLayout`.
+  **Tailwind v4 added**, imported via BaseLayout. **Shared layout:** BaseLayout +
+  Nav + Footer. **Static pages done:** Home, About (real bio), Projects (placeholder).
+  **No Contact page** — contact (Instagram @stevenstrevor) is in the Footer.
+- **Blocked on / next step:** **Phase 4 changes are uncommitted — awaiting Trevor's
+  review** (pause-before-commit pattern). After that: **Phase 5** — blog content
+  collection + schema, `/blog` index, single-post route, one sample post.
 - **Design direction still pending from Trevor** — current styling is a minimal
   neutral default (light theme, gray accents); restyle once a vibe is chosen.
 - **Optional tooling note:** `npx astro check` (the type-checker referenced in
@@ -192,10 +192,12 @@ in layers. Each phase ends with something you can see in the browser.
       (HTTP 200, title prop in <head>, nav/footer present, Tailwind utilities compiled).
 
 ### Phase 4 — Static pages
-- [ ] Home page (`index.astro`)
-- [ ] About page
-- [ ] Projects page (placeholder content is fine for now)
-- [ ] Contact page
+- [x] Home page (`index.astro`) — done in Phase 3
+- [x] About page — real bio (Trevor's words), `src/pages/about.astro`
+- [x] Projects page — "coming soon" placeholder (no projects yet)
+- [~] Contact page — **dropped by decision.** No Contact page; contact info
+      (Instagram @stevenstrevor) lives in the Footer on every page. Removed the
+      Contact link from Nav.
 
 ### Phase 5 — Blog
 - [ ] Define the `blog` content collection schema (title, date, description, tags)
@@ -234,10 +236,13 @@ in layers. Each phase ends with something you can see in the browser.
 - **Custom domain: `stanferd.dev`.** Point at the site in Cloudflare after the
   first successful deploy.
 - **Repo: `personal-site`, public.** Create under the stevensT account.
+- **No Contact page.** Contact info lives in the Footer on every page. Currently
+  Instagram **@stevenstrevor** (`instagram.com/stevenstrevor`). GitHub deliberately
+  left out for now (can add later).
 
 ### Still needed (from Trevor)
-- **Content for pages** — real bio / projects / contact info; placeholders until
-  then.
+- **Projects content** — bio is done (About page); no projects to list yet
+  (Projects page is a "coming soon" placeholder).
 - **Design direction** — colors, fonts, overall vibe. Minimal/neutral default
   until preferences are given.
 

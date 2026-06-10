@@ -2,9 +2,9 @@
 /**
  * Nav — primary site navigation, rendered at the top of every page by BaseLayout.
  *
- * Links to all five planned top-level pages. Pages not yet built (About,
- * Projects, Blog, Contact) will 404 until they are added in later phases —
- * that is expected during construction.
+ * Links to the top-level pages. Blog is not built until Phase 5, so it will 404
+ * until then — expected during construction. There is no Contact page by design;
+ * contact info lives in the Footer instead.
  *
  * No props.
  */
@@ -16,7 +16,6 @@ const links = [
   { href: '/about', label: 'About' },
   { href: '/projects', label: 'Projects' },
   { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
 ];
 ---
 

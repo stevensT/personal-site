@@ -1,0 +1,52 @@
+---
+/**
+ * About page (/about) — Trevor's bio.
+ *
+ * Uses BaseLayout for the shared shell; provides only the page content.
+ * Copy supplied by Trevor; kept in his own voice.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About — Trevor Stevens"
+  description="About Trevor Stevens (a.k.a. Stanferd) — Air Force reservist, home-lab tinkerer, and self-taught developer learning AI, full-stack, and DevOps."
+>
+  <h1 class="text-3xl font-bold">About</h1>
+
+  <!--
+    prose-style spacing without the Tailwind typography plugin: each paragraph
+    gets top margin and relaxed line height for comfortable reading.
+  -->
+  <div class="mt-6 space-y-4 text-gray-700 leading-relaxed">
+    <p>
+      Hello, my name is Trevor, but I sometimes go by Stanferd. I grew up in a
+      small town in central California. From the start, I had a keen interest in
+      computers and electronics.
+    </p>
+    <p>
+      After high school I enlisted in the U.S. Air Force and shipped off to train
+      as a flight engineer. After about a year of flight school, I was stationed
+      in Tucson, AZ, flying the HH-60 Pavehawk helicopter. Our main mission is
+      combat search and rescue, but we also pick up our share of civil rescues
+      when we're not deployed. I've completed multiple tours to Iraq,
+      Afghanistan, and the Horn of Africa.
+    </p>
+    <p>
+      I've lived in Tucson since 2006 and still work full-time as an Air Force
+      reservist.
+    </p>
+    <p>
+      Off alert, and not spending time with family, I tinker with my computers
+      and networking equipment. Over the years I've built a solid home lab, which
+      I use to host services locally and work toward becoming a network engineer.
+      I'm also teaching myself full-stack web development and DevOps. But lately
+      my obsession has been agentic AI, LLMs, and &ldquo;vibe coding&rdquo;.
+    </p>
+    <p>
+      I hold a Bachelor of Applied Science in Network Operations from the
+      University of Arizona, and an Associate of Applied Science in Systems
+      Administration/Networking with a core concentration in cybersecurity.
+    </p>
+  </div>
+</BaseLayout>
