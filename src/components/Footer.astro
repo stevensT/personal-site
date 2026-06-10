@@ -1,0 +1,23 @@
+---
+/**
+ * Footer — site-wide footer, rendered at the bottom of every page by BaseLayout.
+ *
+ * Shows the current year and a contact link.
+ *
+ * No props.
+ */
+
+// Computed once at build time. WHY this works without client-side JS: Astro runs
+// this frontmatter when the site is built, so the year is baked into the HTML.
+// It updates whenever the site is rebuilt (e.g. on each deploy).
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-gray-200">
+  <div
+    class="max-w-3xl mx-auto px-4 py-6 flex justify-between text-sm text-gray-500"
+  >
+    <span>© {year} Trevor Stevens</span>
+    <a href="/contact" class="hover:text-gray-900">Contact</a>
+  </div>
+</footer>

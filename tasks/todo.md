@@ -12,18 +12,22 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 3 — Shared layout (Phases 0–2 complete).
-- **Done so far:** Planning + Phases 0–2. Spec written. Decisions locked (stack,
+- **Current phase:** Phase 4 — Static pages (Phases 0–3 complete).
+- **Done so far:** Planning + Phases 0–3. Spec written. Decisions locked (stack,
   repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
   **Node.js LTS v24.16.0 + npm 11.13.0 installed** (winget, on persisted PATH).
-  **Astro 6.4.5 scaffolded into repo root** (minimal template, strict TS);
-  `npm install` clean; dev server verified. **Tailwind v4 added** (Vite plugin,
-  `src/styles/global.css`) and verified compiling utilities.
-- **Blocked on / next step:** **Phase 2 changes are uncommitted — awaiting Trevor's
-  review** (he asked to pause before committing). After that: **Phase 3** — build
-  `BaseLayout` (and import `src/styles/global.css` there so Tailwind applies
-  site-wide), then `Nav` and `Footer` components.
+  **Astro 6.4.5 scaffolded into repo root** (minimal template, strict TS).
+  **Tailwind v4 added**, imported via BaseLayout. **Shared layout built:**
+  `BaseLayout` (title/description props, sticky footer) + `Nav` (all 5 links) +
+  `Footer` (build-time year); `index.astro` uses the layout. Verified rendering.
+- **Blocked on / next step:** **Phase 3 changes are uncommitted — awaiting Trevor's
+  review** (he asked to pause before committing). After that: **Phase 4** — build the
+  About, Projects, and Contact pages (Home already done) using `BaseLayout`.
+- **Design direction still pending from Trevor** — current styling is a minimal
+  neutral default (light theme, gray accents); restyle once a vibe is chosen.
+- **Optional tooling note:** `npx astro check` (the type-checker referenced in
+  CLAUDE.md) needs `@astrojs/check` + `typescript` installed — not yet added.
 - **Heads-up:** freshly-installed tools may not appear in an already-open
   terminal (PATH is read at launch) — open a new terminal or call by full path.
 
@@ -178,9 +182,14 @@ in layers. Each phase ends with something you can see in the browser.
       `BaseLayout` so Tailwind applies site-wide.
 
 ### Phase 3 — Shared layout
-- [ ] Create `BaseLayout` (head, nav, footer wrapper)
-- [ ] Create `Nav` component with links to all planned pages
-- [ ] Create `Footer` component
+- [x] Create `BaseLayout` (head, nav, footer wrapper) — `src/layouts/BaseLayout.astro`;
+      takes `title` (required) + `description?` props; imports `global.css` here so
+      Tailwind applies site-wide (closed the Phase 2 TODO); sticky footer via flex.
+- [x] Create `Nav` component with links to all planned pages — `src/components/Nav.astro`;
+      links to all 5 (About/Projects/Blog/Contact 404 until Phases 4–5, expected).
+- [x] Create `Footer` component — `src/components/Footer.astro`; build-time © year.
+- [x] Converted `index.astro` to use `<BaseLayout>`; verified rendered page
+      (HTTP 200, title prop in <head>, nav/footer present, Tailwind utilities compiled).
 
 ### Phase 4 — Static pages
 - [ ] Home page (`index.astro`)

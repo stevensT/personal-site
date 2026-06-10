@@ -1,17 +1,18 @@
 ---
-
+/**
+ * Home page (/) — the site's front door.
+ *
+ * Uses BaseLayout for the shared shell (head, nav, footer) and provides only
+ * the page-specific content. Placeholder copy for now; the real intro/bio is
+ * added in Phase 4.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Trevor Stevens — Home">
+  <h1 class="text-3xl font-bold">Trevor Stevens</h1>
+  <p class="mt-4 text-gray-600">
+    Tech enthusiast learning to code, AI/LLMs, and DevOps — and writing about it
+    in public. More coming soon.
+  </p>
+</BaseLayout>
