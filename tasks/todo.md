@@ -12,16 +12,18 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 2 — Styling (Phases 0 & 1 complete).
-- **Done so far:** Planning + Phases 0–1. Spec written. Decisions locked (stack,
-  repo `personal-site` public under GitHub user `stevensT`, domain `stanferd.dev`).
+- **Current phase:** Phase 3 — Shared layout (Phases 0–2 complete).
+- **Done so far:** Planning + Phases 0–2. Spec written. Decisions locked (stack,
+  repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
   **Node.js LTS v24.16.0 + npm 11.13.0 installed** (winget, on persisted PATH).
-  **Astro 6.4.5 project scaffolded into the repo root** (minimal template, strict
-  TS); `npm install` clean; `npm run dev` verified serving the starter page.
-- **Blocked on / next step:** **Phase 2 — add Tailwind** via `npx astro add tailwind`,
-  then prove a Tailwind utility class visibly styles an element. (Not yet committed
-  to git — see Phase 1 work; commit + push when ready.)
+  **Astro 6.4.5 scaffolded into repo root** (minimal template, strict TS);
+  `npm install` clean; dev server verified. **Tailwind v4 added** (Vite plugin,
+  `src/styles/global.css`) and verified compiling utilities.
+- **Blocked on / next step:** **Phase 2 changes are uncommitted — awaiting Trevor's
+  review** (he asked to pause before committing). After that: **Phase 3** — build
+  `BaseLayout` (and import `src/styles/global.css` there so Tailwind applies
+  site-wide), then `Nav` and `Footer` components.
 - **Heads-up:** freshly-installed tools may not appear in an already-open
   terminal (PATH is read at launch) — open a new terminal or call by full path.
 
@@ -164,8 +166,16 @@ in layers. Each phase ends with something you can see in the browser.
       .astro/, .env (verified via `git check-ignore`)
 
 ### Phase 2 — Styling
-- [ ] Add Tailwind via Astro's official integration
-- [ ] Verify a Tailwind utility class visibly styles an element
+- [x] Add Tailwind via Astro's official integration — `npx astro add tailwind`
+      installed Tailwind **v4** (`tailwindcss` + `@tailwindcss/vite`), added the
+      Vite plugin to `astro.config.mjs`, scaffolded `src/styles/global.css`
+      (`@import "tailwindcss";`). Note: Tailwind v4 has **no `tailwind.config.js`**.
+- [x] Verify a Tailwind utility class visibly styles an element — temporarily
+      imported global.css + a styled `<h1>` in index.astro; confirmed the compiled
+      CSS contained `.text-4xl/.font-bold/.text-blue-600/.underline`, then reverted
+      index.astro to the clean starter.
+      **TODO (Phase 3):** `global.css` is currently imported nowhere — import it in
+      `BaseLayout` so Tailwind applies site-wide.
 
 ### Phase 3 — Shared layout
 - [ ] Create `BaseLayout` (head, nav, footer wrapper)

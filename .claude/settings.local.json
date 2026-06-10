@@ -16,7 +16,10 @@
       "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo view stevensT/personal-site --json defaultBranchRef)",
       "Bash(git add *)",
       "Bash(git commit -m 'Scaffold Astro project \\(Phases 0-1\\) *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" repo view stevensT/personal-site --json visibility)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/)",
+      "Bash(git commit -m 'Add Tailwind CSS v4 integration \\(Phase 2\\) *)"
     ]
   }
 }
