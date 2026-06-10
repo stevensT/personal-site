@@ -23,7 +23,8 @@
       "mcp__visualize__read_me",
       "mcp__visualize__show_widget",
       "Bash(git commit -m 'Build shared layout: BaseLayout, Nav, Footer \\(Phase 3\\) *)",
-      "Bash(git commit -m 'Add About + Projects pages; move contact to footer \\(Phase 4\\) *)"
+      "Bash(git commit -m 'Add About + Projects pages; move contact to footer \\(Phase 4\\) *)",
+      "Bash(git commit -m 'Refine CLAUDE.md: dev background + commit/push workflow *)"
     ]
   }
 }
