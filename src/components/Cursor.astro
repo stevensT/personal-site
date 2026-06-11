@@ -1,0 +1,40 @@
+---
+/**
+ * Cursor — the site's signature blinking block cursor.
+ *
+ * A small accent-colored rectangle that blinks on/off, evoking a live terminal.
+ * Drop it after a line of text (e.g. the home tagline) for the "still typing"
+ * effect called for in the build spec.
+ *
+ * aria-hidden: it's decorative, so screen readers should skip it.
+ *
+ * No props.
+ */
+---
+
+<span class="cursor" aria-hidden="true"></span>
+
+<style>
+  /*
+   * Sizes itself in `ch`/`em` so it scales with the surrounding font size.
+   * The `blink` keyframes live in global.css; steps(1) makes it a hard on/off
+   * blink (no fade) — closer to a real terminal cursor. var(--color-accent)
+   * comes from the @theme tokens in global.css.
+   */
+  .cursor {
+    display: inline-block;
+    width: 0.6ch;
+    height: 1.05em;
+    margin-left: 0.15ch;
+    background: var(--color-accent);
+    vertical-align: text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  /* Respect users who prefer no motion: show a steady cursor instead. */
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      animation: none;
+    }
+  }
+</style>

@@ -1,18 +1,71 @@
 ---
 /**
- * Home page (/) — the site's front door.
+ * Home page (/) — the site's front door, built to the terminal mockup in
+ * buildspec.md / todo.md §9.
  *
- * Uses BaseLayout for the shared shell (head, nav, footer) and provides only
- * the page-specific content. Placeholder copy for now; the real intro/bio is
- * added in Phase 4.
+ * Layout (top to bottom): prompt + `whoami`, name, divider rule, role line,
+ * tagline with a blinking cursor, quote, location, and the keyboard-shortcut
+ * row that doubles as the primary navigation.
+ *
+ * The keybind row is hardcoded here for now; the Nav-rework step will extract a
+ * shared component and wire the actual keydown handlers.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Prompt from '../components/Prompt.astro';
+import Cursor from '../components/Cursor.astro';
+
+// The chosen tagline + quote (see todo.md §7 "Decisions").
+const tagline =
+  'Combat rescue flight engineer turned network builder, currently rebuilding his digital life from the ground up.';
+const quote =
+  'Rescue by day, building networks and systems by night.';
+
+// The keyboard-shortcut hints. Single source so the letters/labels stay in sync
+// when the Nav rework reuses them. (Routes are wired up in a later step.)
+// Page-level nav keys. colophon/help live in the AppWindow footer bar instead,
+// so they're intentionally omitted here.
+const keys = [
+  { key: 'a', label: 'about' },
+  { key: 'b', label: 'blog' },
+  { key: 'c', label: 'career' },
+];
 ---
 
 <BaseLayout title="Trevor Stevens — Home">
-  <h1 class="text-3xl font-bold">Trevor Stevens</h1>
-  <p class="mt-4 text-gray-600">
-    Tech enthusiast learning to code, AI/LLMs, and DevOps — and writing about it
-    in public. More coming soon.
+  <!-- Prompt line: stanferd@csar:~$ whoami -->
+  <Prompt command="whoami" />
+
+  <!-- Name -->
+  <h1 class="font-heading text-4xl font-bold mt-6 mb-2">Trevor Stevens</h1>
+
+  <!-- Divider rule (drawn with box characters for the terminal feel) -->
+  <div class="font-mono text-muted select-none" aria-hidden="true">
+    ────────────────────────
+  </div>
+
+  <!--
+    Role line + tagline rendered as ONE block of text: same font (Space Grotesk)
+    and size, a <br /> instead of a paragraph gap, no `>` prefix. The blinking
+    cursor trails the whole block.
+  -->
+  <p class="font-heading mt-2 leading-relaxed">
+    Combat Rescue. Network Engineer. DevOps.<br />
+    {tagline}<Cursor />
   </p>
+
+  <!-- Quote -->
+  <p class="mt-6 text-muted italic leading-relaxed">
+    <span class="text-accent not-italic">&gt;</span> "{quote}"
+  </p>
+
+  <!-- Keyboard-shortcut nav (primary nav), stacked vertically. -->
+  <nav class="font-mono text-sm text-muted mt-8 flex flex-col gap-2" aria-label="Keyboard shortcuts">
+    {
+      keys.map((k) => (
+        <span class="whitespace-nowrap">
+          <span class="text-accent">[{k.key}]</span> {k.label}
+        </span>
+      ))
+    }
+  </nav>
 </BaseLayout>

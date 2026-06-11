@@ -12,7 +12,8 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 5 — Blog (Phases 0–4 complete).
+- **Current phase:** Phase 4.5 — Terminal restyle (design pivot from `buildspec.md`),
+  then Phase 5 — Blog. (Phases 0–4 complete.)
 - **Done so far:** Planning + Phases 0–4. Spec written. Decisions locked (stack,
   repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
@@ -21,11 +22,16 @@
   **Tailwind v4 added**, imported via BaseLayout. **Shared layout:** BaseLayout +
   Nav + Footer. **Static pages done:** Home, About (real bio), Projects (placeholder).
   **No Contact page** — contact (Instagram @stevenstrevor) is in the Footer.
-- **Blocked on / next step:** **Phase 4 changes are uncommitted — awaiting Trevor's
-  review** (pause-before-commit pattern). After that: **Phase 5** — blog content
-  collection + schema, `/blog` index, single-post route, one sample post.
-- **Design direction still pending from Trevor** — current styling is a minimal
-  neutral default (light theme, gray accents); restyle once a vibe is chosen.
+- **Blocked on / next step:** Design direction is now **decided** (see §7 + new §9
+  Design System). Next: **Phase 4.5 — terminal restyle** (font comparison page →
+  pick fonts → restyle BaseLayout/Nav/Footer dark, add keyboard nav + theme
+  toggle, swap Projects→Career, add Colophon, rewrite About with military bio).
+  Then **Phase 5** — blog. Phase 4 changes plus these are uncommitted — awaiting
+  Trevor's review (pause-before-commit pattern).
+- **Design direction:** RESOLVED via `buildspec.md` — **terminal/CLI aesthetic**,
+  dark default (`#0d1117`), monospace, prompt prefix `stanferd@csar:~$`, blinking
+  cursor, inline keyboard shortcuts. Fonts TBD pending a side-by-side comparison
+  page. Full spec captured in §9.
 - **Optional tooling note:** `npx astro check` (the type-checker referenced in
   CLAUDE.md) needs `@astrojs/check` + `typescript` installed — not yet added.
 - **Heads-up:** freshly-installed tools may not appear in an already-open
@@ -91,8 +97,8 @@ website/
 │   ├── pages/           # Each file = one route/URL (file-based routing)
 │   │   ├── index.astro      → /
 │   │   ├── about.astro      → /about
-│   │   ├── projects.astro   → /projects
-│   │   ├── contact.astro    → /contact
+│   │   ├── career.astro     → /career     (replaces projects)
+│   │   ├── colophon.astro   → /colophon   (how the site is built)
 │   │   └── blog/
 │   │       ├── index.astro       → /blog (list of posts)
 │   │       └── [...slug].astro    → /blog/<post-name> (one post)
@@ -121,11 +127,15 @@ So adding a post = adding one Markdown file. No hand-built HTML per post.
 
 | Component        | Type        | Purpose |
 |------------------|-------------|---------|
-| `BaseLayout`     | Layout      | Shared `<head>`, site nav, footer — wraps every page. |
+| `BaseLayout`     | Layout      | Shared `<head>`, site nav, footer — wraps every page. Dark terminal theme. |
 | `BlogLayout`     | Layout      | Wraps a single blog post (title, date, post body styling). |
-| `Nav`            | Component   | Site navigation links (Home, About, Projects, Blog, Contact). |
-| `Footer`         | Component   | Copyright, social/contact links. |
+| `Nav`            | Component   | Site nav as inline keyboard hints: `[a] about [b] blog [c] career [x] colophon`. |
+| `Footer`         | Component   | Copyright, social/contact links (Instagram @stevenstrevor). |
 | `PostCard`       | Component   | Preview tile for a blog post in the `/blog` list. |
+| `Prompt`         | Component   | Renders the `stanferd@csar:~$` prompt prefix before a name/section. |
+| `Cursor`         | Component   | The signature blinking cursor (CSS animation, accent green). |
+| `KeyboardNav`    | Script      | ~20 lines vanilla JS: keydown → route or theme toggle. No framework. |
+| `ThemeToggle`    | Script      | `[d]` flips dark↔light; persists choice (localStorage), dark is default. |
 | `blog` collection| Content     | The Markdown posts + their metadata schema. |
 
 ---
@@ -199,6 +209,24 @@ in layers. Each phase ends with something you can see in the browser.
       (Instagram @stevenstrevor) lives in the Footer on every page. Removed the
       Contact link from Nav.
 
+### Phase 4.5 — Terminal restyle (design pivot from `buildspec.md`)
+- [x] Build a throwaway `/fonts` comparison page (all-mono vs. mono+Newsreader),
+      load the candidate fonts, let Trevor pick — **Option B chosen**. Page still
+      on disk at `src/pages/fonts.astro`; delete once fonts are wired site-wide.
+- [ ] Apply the chosen fonts + color tokens (`#0d1117` bg, `#c9d1d9` text,
+      `#1cb03a` accent, `#8b949e` muted) as CSS variables / Tailwind theme
+- [x] Restyle `BaseLayout` to dark terminal (tokens + fonts in global.css)
+- [x] Add `Prompt` + `Cursor` components
+- [ ] Rework `Nav` into inline keyboard hints (`[a] about  [b] blog  ...`)
+- [ ] Add `KeyboardNav` script (keydown → route) and `ThemeToggle` (`[d]`, dark
+      default, persisted) + a `[h]` help overlay
+- [x] Rebuild Home (`index.astro`) to the spec mockup: prompt, name, tagline,
+      quote + blinking cursor, 📍 Arizona, keybind row (keys display-only for now)
+- [ ] Add `career.astro`; **delete** `projects.astro` (confirm with Trevor first)
+- [ ] Add `colophon.astro` (built with Astro / Cloudflare Pages / VS Code)
+- [ ] Rewrite About with the military + homelab bio from the spec
+- [ ] Verify keyboard nav + theme toggle work and dark renders correctly
+
 ### Phase 5 — Blog
 - [ ] Define the `blog` content collection schema (title, date, description, tags)
 - [ ] Add `BlogLayout`
@@ -238,13 +266,28 @@ in layers. Each phase ends with something you can see in the browser.
 - **Repo: `personal-site`, public.** Create under the stevensT account.
 - **No Contact page.** Contact info lives in the Footer on every page. Currently
   Instagram **@stevenstrevor** (`instagram.com/stevenstrevor`). GitHub deliberately
-  left out for now (can add later).
+  left out for now (can add later). Buildspec doesn't change this — footer stays.
+- **Design direction: terminal/CLI aesthetic** (from `buildspec.md`). Full spec in
+  §9. Dark default, monospace, prompt prefix, keyboard nav, blinking cursor.
+- **Site structure:** Home / About / **Career** / Blog / **Colophon**. Projects is
+  retired (replaced by Career). `projects.astro` to be deleted — *pending the edit*.
+- **Tagline (chosen):** "Combat rescue flight engineer turned network builder,
+  currently rebuilding his digital life from the ground up."
+- **Quote (chosen):** "Flying rescue helicopters by day, building networks and
+  systems by night."
+- **Keybinds (canonical):** `[a]` about · `[b]` blog (route `/blog`, not
+  `/writing`) · `[c]` career · `[x]` colophon · `[d]` toggle theme · `[h]` help.
+- **Theme:** dark is default; `[d]` toggles to light, choice persisted.
 
 ### Still needed (from Trevor)
-- **Projects content** — bio is done (About page); no projects to list yet
-  (Projects page is a "coming soon" placeholder).
-- **Design direction** — colors, fonts, overall vibe. Minimal/neutral default
-  until preferences are given.
+- ~~**Font choice**~~ — **RESOLVED: Option B** (mixed). Space Grotesk headings ·
+  Newsreader (serif) body · Space Mono prompt/code. Chosen via the `/fonts`
+  comparison page. (Overrides the spec's "no serifs" line — serif body won on
+  readability.)
+- **Career content** — the real bullet list (HH-60W, CSAR, years of service,
+  network roles). Spec sketches it; needs Trevor's actual dates/details.
+- **About rewrite** — current About predates the military bio; needs the flight-
+  engineer / homelab / Arizona-dad framing from the spec.
 
 ---
 
@@ -253,3 +296,67 @@ in layers. Each phase ends with something you can see in the browser.
 - **Phase 0 complete.** Node.js LTS v24.16.0 / npm 11.13.0 installed via winget
   and verified on the persisted PATH. Next up is Phase 1 — scaffolding the Astro
   project.
+
+---
+
+## 9. Design System — Terminal Aesthetic (from `buildspec.md`)
+
+> The personality *is* the constraint: a real terminal, not "dark-mode corporate."
+> Single centered column, monospace, prompt prefix, keyboard-driven, blinking cursor.
+
+### Color tokens
+| Token        | Value     | Use |
+|--------------|-----------|-----|
+| Background   | `#0d1117` | Page background (GitHub dark, slightly warm). |
+| Text         | `#c9d1d9` | Body text (off-white, not harsh). |
+| Accent/prompt| `#1cb03a` | Prompt `$`, links, the blinking cursor. |
+| Muted        | `#8b949e` | Secondary text, keybind hints. |
+
+(Light theme via `[d]` — define a light counterpart for these when wiring the toggle.)
+
+### Typography — **CHOSEN: Option B** (via `/fonts` comparison page)
+- **Headings / name / roles:** Space Grotesk.
+- **Body text:** Newsreader (serif) — won on long-form readability.
+- **Prompt / keybinds / code:** Space Mono.
+- Loaded from Google Fonts (`<link>`, no npm packages). Wire these into the real
+  site theme; then delete the throwaway `/fonts` page.
+
+### Layout
+- Single column, centered, `max-width: 700px`.
+- Prompt prefix `stanferd@csar:~$` before name/section headers.
+- Keyboard hints rendered inline (e.g. `[a] about   [b] blog   [c] career`).
+- **Signature element:** blinking cursor after the tagline (CSS animation, accent).
+
+### Keyboard navigation (vanilla JS, ~20 lines — no framework)
+```
+[a] → /about     [b] → /blog       [c] → /career
+[x] → /colophon  [d] → toggle theme [h] → help overlay
+```
+Routes are canonical here (the spec's stray `w → /writing` is dropped in favor of
+`b → /blog`).
+
+### Home page target (spec mockup)
+```
+stanferd@csar:~$ whoami
+
+Trevor Stevens
+────────────────────────
+Combat Rescue. Network Engineer. DevOps.
+> Combat rescue flight engineer turned network builder, currently
+  rebuilding his digital life from the ground up.
+
+> "Flying rescue helicopters by day, building networks and systems by night."
+
+📍 Arizona
+
+[a] about    [b] blog    [c] career   [x] colophon
+[d] toggle dark/light     [h] help
+```
+
+### Content notes
+- **About** (`about.md`-style): 2 paragraphs, human not résumé — work, homelab,
+  what he actually cares about. *Needs rewrite from current About.*
+- **Career** (`career.md`-style): bullet list — HH-60W, CSAR, years of service,
+  network engineering roles. No flowery prose. *Needs Trevor's real details.*
+- **Colophon:** built with Astro, hosted on Cloudflare Pages, written in VS Code;
+  talk about the design choices.

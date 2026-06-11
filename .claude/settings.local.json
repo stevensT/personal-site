@@ -24,7 +24,14 @@
       "mcp__visualize__show_widget",
       "Bash(git commit -m 'Build shared layout: BaseLayout, Nav, Footer \\(Phase 3\\) *)",
       "Bash(git commit -m 'Add About + Projects pages; move contact to footer \\(Phase 4\\) *)",
-      "Bash(git commit -m 'Refine CLAUDE.md: dev background + commit/push workflow *)"
+      "Bash(git commit -m 'Refine CLAUDE.md: dev background + commit/push workflow *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4321/fonts)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/)",
+      "Bash(echo \"home: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/\\)\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/about)",
+      "Bash(echo \"about: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/about\\)\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/fonts)"
     ]
   }
 }

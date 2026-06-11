@@ -1,0 +1,26 @@
+---
+/**
+ * Prompt — the terminal prompt prefix shown before a name or section heading.
+ *
+ * Renders `stanferd@csar:~$` in the accent color, optionally followed by a
+ * "command" (e.g. `whoami`, `cat about.md`). Centralizing the prompt string
+ * here means the hostname is defined once and reused on every page.
+ *
+ * Props:
+ *   - command?: string — the text after the `$` (e.g. "whoami"). Optional.
+ */
+interface Props {
+  command?: string;
+}
+
+const { command } = Astro.props;
+
+// The terminal identity. `stanferd` = the domain/handle, `csar` = combat
+// search-and-rescue — a nod to the bio. Defined once; change it here only.
+const promptPrefix = 'stanferd@csar:~$';
+---
+
+<span class="font-mono text-sm">
+  <span class="text-accent">{promptPrefix}</span>
+  {command && <span class="text-text"> {command}</span>}
+</span>

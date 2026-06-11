@@ -71,5 +71,4 @@ Fill in the real, project-specific architecture here as it takes shape.
 
 ## Documentation
 - Every new component needs a comment block explaining its purpose and props
-- Update the README when adding a new page or major feature
 - If a decision was non-obvious, leave a comment explaining why we did it this way

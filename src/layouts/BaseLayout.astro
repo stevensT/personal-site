@@ -15,8 +15,7 @@
  *   - description?: string  — meta description for SEO (optional; has a default)
  */
 import '../styles/global.css';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
+import AppWindow from '../components/AppWindow.astro';
 
 interface Props {
   title: string;
@@ -40,17 +39,32 @@ const {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+
+    <!--
+      Google Fonts for the terminal type system (chosen "Option B"):
+        Space Grotesk — headings   Newsreader — body   Space Mono — prompt/code
+      preconnect warms the connection so text doesn't flash; display=swap shows
+      a fallback immediately and swaps the web font in when it arrives.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <!--
-    min-h-screen + flex flex-col + a flex-1 <main> gives a "sticky footer":
-    the footer sits at the bottom even on short pages.
+    The page is the dark "desktop" (bg-page); the content sits inside a centered
+    AppWindow. min-h-screen + centering keeps the window vertically centered on
+    short pages. bg-page/text-text/font-body come from the @theme tokens.
   -->
-  <body class="min-h-screen flex flex-col bg-white text-gray-900">
-    <Nav />
-    <!-- Each page's unique content is injected here. max-w keeps lines readable. -->
-    <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-10">
-      <slot />
+  <body class="min-h-screen bg-page text-text font-body">
+    <main
+      class="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8"
+    >
+      <AppWindow>
+        <slot />
+      </AppWindow>
     </main>
-    <Footer />
   </body>
 </html>

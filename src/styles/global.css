@@ -1,1 +1,40 @@
 @import "tailwindcss";
+
+/*
+ * Design tokens — the single source of truth for the site's terminal look.
+ *
+ * WHY @theme (Tailwind v4): values defined here are turned into real utility
+ * classes at build time. Declaring `--color-accent` below means you can write
+ * `text-accent`, `bg-accent`, `border-accent`, etc. anywhere — no separate
+ * config file. Change a value here and it updates across the whole site.
+ *
+ * Colors come from buildspec.md / todo.md §9 (GitHub-dark terminal palette).
+ * Fonts are the chosen "Option B" set; the actual font files are loaded via
+ * <link> tags in BaseLayout's <head>.
+ */
+@theme {
+  /* Color palette */
+  --color-page: #010409;    /* the dark void behind the app window */
+  --color-bg: #0d1117;      /* the app window's interior (warm dark) */
+  --color-elevated: #161b22;/* window title bar + footer bar (one step lighter) */
+  --color-text: #c9d1d9;    /* default body text (off-white) */
+  --color-accent: #1cb03a;  /* prompt, links, blinking cursor (terminal green) */
+  --color-muted: #8b949e;   /* secondary text, keybind hints */
+  --color-line: #21262d;    /* subtle borders / dividers */
+
+  /* Type system (Option B) */
+  --font-heading: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Newsreader", Georgia, serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+}
+
+/*
+ * The signature blinking cursor animation. Defined globally so any element can
+ * reuse it (the Cursor component, the home tagline, etc.). steps(1) makes it a
+ * hard on/off blink rather than a smooth fade — more "real terminal".
+ */
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
