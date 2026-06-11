@@ -1,6 +1,6 @@
 # Portfolio at [stanferd.dev](https://stanferd.dev)
 
-The personal site and portfolio of **Trevor Stevens**, a .
+The personal site and portfolio of **Trevor Stevens**, a technologist, network builder, currently rebuilding his digital life from the ground up.
 
 This project serves as a live demonstration of my technical skills, a source for the technical ramblings that go on in my head, and a direct line to get in touch with me.
 
@@ -10,6 +10,6 @@ This project serves as a live demonstration of my technical skills, a source for
 
 - **Styling**: Tailwind CSS v4
 
-- **Scripting**: 
+- **Language**: TypeScript (strict mode)
 
 - **Deployment**: Cloudflare
