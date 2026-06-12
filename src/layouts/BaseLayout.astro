@@ -3,8 +3,9 @@
  * BaseLayout — the shared shell wrapped around every page.
  *
  * Supplies the <head> (charset, viewport, favicon, SEO title/description) and
- * the persistent site chrome (Nav + Footer), so each page only provides its
- * own unique body content via <slot />.
+ * the persistent site chrome (the AppWindow shell), so each page only provides
+ * its own unique body content via <slot />. Also wires the site-wide keyboard
+ * navigation, theme toggle, and help overlay (scripts at the bottom).
  *
  * WHY global.css is imported here: this single import is what makes Tailwind's
  * utility classes available on every page. Importing it once in the layout
@@ -13,19 +14,26 @@
  * Props:
  *   - title:        string  — text for the browser tab / <title> (required)
  *   - description?: string  — meta description for SEO (optional; has a default)
+ *   - windowed?:    boolean — true only for the Home page: wraps content in the
+ *                             AppWindow chrome. All other pages render a plain
+ *                             centered single-column layout. (default: false)
  */
 import '../styles/global.css';
 import AppWindow from '../components/AppWindow.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
   description?: string;
+  windowed?: boolean;
 }
 
 // Fallback description used when a page does not pass its own.
 const {
   title,
   description = 'Personal site of Trevor Stevens — learning to code, AI/LLMs, and DevOps in public.',
+  windowed = false,
 } = Astro.props;
 ---
 
@@ -52,19 +60,143 @@ const {
       href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+
+    <!--
+      Anti-flash theme script. is:inline = Astro leaves it untouched and it runs
+      immediately (before the body paints), so a light-mode visitor never sees a
+      dark flash first. Dark is the default, so we only act when 'light' is saved.
+    -->
+    <script is:inline>
+      if (localStorage.getItem("theme") === "light") {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
   </head>
   <!--
-    The page is the dark "desktop" (bg-page); the content sits inside a centered
-    AppWindow. min-h-screen + centering keeps the window vertically centered on
-    short pages. bg-page/text-text/font-body come from the @theme tokens.
+    The page is the dark "desktop" (bg-page). Home (windowed) sits inside a
+    centered AppWindow; every other page renders a plain centered column.
+    bg-page/text-text/font-body come from the @theme tokens.
   -->
   <body class="min-h-screen bg-page text-text font-body">
-    <main
-      class="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8"
+    {
+      windowed ? (
+        <main class="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8">
+          <AppWindow>
+            <slot />
+          </AppWindow>
+        </main>
+      ) : (
+        <div class="flex min-h-screen flex-col">
+          <Nav />
+          <main class="mx-auto w-full max-w-[700px] flex-1 px-4 py-10 sm:py-16">
+            <slot />
+          </main>
+          <Footer />
+        </div>
+      )
+    }
+
+    <!--
+      Help overlay. Hidden until [h] is pressed. The `hidden` attribute keeps it
+      out of the layout and the accessibility tree until shown.
+    -->
+    <div
+      id="help-overlay"
+      hidden
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
     >
-      <AppWindow>
-        <slot />
-      </AppWindow>
-    </main>
+      <div
+        class="w-full max-w-xs rounded-lg border border-line bg-elevated p-6 font-mono text-sm"
+      >
+        <p class="mb-3 text-accent">keyboard shortcuts</p>
+        <ul class="space-y-1 text-muted">
+          <li><span class="text-accent">[a]</span> about</li>
+          <li><span class="text-accent">[b]</span> blog</li>
+          <li><span class="text-accent">[c]</span> career</li>
+          <li><span class="text-accent">[x]</span> colophon</li>
+          <li><span class="text-accent">[d]</span> toggle dark / light</li>
+          <li><span class="text-accent">[h]</span> toggle this help</li>
+          <li><span class="text-accent">[esc]</span> close</li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      Site-wide interactivity. This is a normal Astro <script>: it's bundled and
+      runs after the DOM is ready, once per page load. Since navigation is a full
+      page load, re-binding each load is correct and simple.
+    -->
+    <script>
+      // key -> path. d/h/esc are handled specially below.
+      const ROUTES: Record<string, string> = {
+        a: "/about",
+        b: "/blog",
+        c: "/career",
+        x: "/colophon",
+      };
+
+      const html = document.documentElement;
+      const helpOverlay = document.getElementById("help-overlay");
+
+      /** Apply a theme by toggling the data-attribute the CSS keys off of. */
+      function applyTheme(theme: string): void {
+        if (theme === "light") html.dataset.theme = "light";
+        else delete html.dataset.theme;
+      }
+
+      /** Flip dark <-> light and remember the choice. */
+      function toggleTheme(): void {
+        const next = html.dataset.theme === "light" ? "dark" : "light";
+        localStorage.setItem("theme", next);
+        applyTheme(next);
+      }
+
+      /** Show/hide the keyboard-shortcut overlay. */
+      function toggleHelp(force?: boolean): void {
+        if (!helpOverlay) return;
+        const show = force ?? helpOverlay.hasAttribute("hidden");
+        helpOverlay.toggleAttribute("hidden", !show);
+      }
+
+      // The title-bar sun icon mirrors the [d] shortcut.
+      document
+        .getElementById("theme-toggle")
+        ?.addEventListener("click", toggleTheme);
+
+      // Clicking the dimmed backdrop (but not the panel) closes help.
+      helpOverlay?.addEventListener("click", (e) => {
+        if (e.target === helpOverlay) toggleHelp(false);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        // Don't hijack browser/OS shortcuts (Ctrl/Cmd/Alt combos).
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+        // Don't fire while the user is typing in a field.
+        const el = e.target as HTMLElement | null;
+        if (
+          el &&
+          (el.tagName === "INPUT" ||
+            el.tagName === "TEXTAREA" ||
+            el.isContentEditable)
+        ) {
+          return;
+        }
+
+        if (e.key === "Escape") {
+          toggleHelp(false);
+          return;
+        }
+
+        const key = e.key.toLowerCase();
+        if (key === "d") {
+          toggleTheme();
+        } else if (key === "h") {
+          toggleHelp();
+        } else if (ROUTES[key]) {
+          window.location.href = ROUTES[key];
+        }
+      });
+    </script>
   </body>
 </html>

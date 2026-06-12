@@ -1,9 +1,7 @@
 ---
 /**
- * Footer — site-wide footer, rendered at the bottom of every page by BaseLayout.
- *
- * Shows the current year and contact info (Instagram). This is where contact
- * lives — there is no separate Contact page by design.
+ * Footer — the normal site footer for non-home pages (Home uses the AppWindow
+ * footer bar instead). Shows copyright and Trevor's social profile links.
  *
  * No props.
  */
@@ -12,25 +10,38 @@
 // this frontmatter when the site is built, so the year is baked into the HTML.
 // It updates whenever the site is rebuilt (e.g. on each deploy).
 const year = new Date().getFullYear();
+
+// Label-only social links (handle lives in the href), matching the home window.
+const socials = [
+  { label: 'github', href: 'https://github.com/stevensT' },
+  { label: 'instagram', href: 'https://instagram.com/stevenstrevor' },
+];
 ---
 
-<footer class="border-t border-line">
+<footer>
+  <!-- Divider is on the inner container so the line is content-width, not full page. -->
   <div
-    class="max-w-[700px] mx-auto px-4 py-6 flex justify-between text-sm text-muted font-mono"
+    class="max-w-[700px] mx-auto px-4 py-6 flex justify-between text-sm text-muted font-mono border-t border-line"
   >
     <span>© {year} Trevor Stevens</span>
     <!--
-      External link: target=_blank opens a new tab; rel="me" declares this as
-      Trevor's own profile (identity); noopener/noreferrer are security hygiene
+      External links: target=_blank opens a new tab; rel="me" declares these as
+      Trevor's own profiles (identity); noopener/noreferrer are security hygiene
       for any new-tab external link.
     -->
-    <a
-      href="https://instagram.com/stevenstrevor"
-      target="_blank"
-      rel="me noopener noreferrer"
-      class="hover:text-accent"
-    >
-      Instagram @stevenstrevor
-    </a>
+    <nav class="flex gap-4" aria-label="Social links">
+      {
+        socials.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="me noopener noreferrer"
+            class="transition-colors hover:text-accent"
+          >
+            {s.label}
+          </a>
+        ))
+      }
+    </nav>
   </div>
 </footer>

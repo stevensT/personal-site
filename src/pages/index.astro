@@ -22,16 +22,17 @@ const quote =
 
 // The keyboard-shortcut hints. Single source so the letters/labels stay in sync
 // when the Nav rework reuses them. (Routes are wired up in a later step.)
-// Page-level nav keys. colophon/help live in the AppWindow footer bar instead,
-// so they're intentionally omitted here.
+// Page-level nav links. colophon/help live in the AppWindow footer bar instead,
+// so they're intentionally omitted here. `href` is the clickable target — only
+// the word itself is wrapped in the link (not the `[key]` or `~/` prefix).
 const keys = [
-  { key: 'a', label: 'about' },
-  { key: 'b', label: 'blog' },
-  { key: 'c', label: 'career' },
+  { key: 'a', label: 'about', href: '/about' },
+  { key: 'b', label: 'blog', href: '/blog' },
+  { key: 'c', label: 'career', href: '/career' },
 ];
 ---
 
-<BaseLayout title="Trevor Stevens — Home">
+<BaseLayout title="Trevor Stevens — Home" windowed>
   <!-- Prompt line: stanferd@csar:~$ whoami -->
   <Prompt command="whoami" />
 
@@ -58,12 +59,16 @@ const keys = [
     <span class="text-accent not-italic">&gt;</span> "{quote}"
   </p>
 
-  <!-- Keyboard-shortcut nav (primary nav), stacked vertically. -->
-  <nav class="font-mono text-sm text-muted mt-8 flex flex-col gap-2" aria-label="Keyboard shortcuts">
+  <!--
+    Primary nav, stacked vertically. Each line reads `[key] ~/word`; the [key]
+    and `~/` are plain text and only the word is the link. The matching keyboard
+    shortcut (wired globally in BaseLayout) still works too.
+  -->
+  <nav class="font-mono text-sm text-muted mt-8 flex flex-col gap-2" aria-label="Primary navigation">
     {
       keys.map((k) => (
         <span class="whitespace-nowrap">
-          <span class="text-accent">[{k.key}]</span> {k.label}
+          <span class="text-accent">[{k.key}]</span> ~/<a href={k.href} class="text-text transition-colors hover:text-accent">{k.label}</a>
         </span>
       ))
     }

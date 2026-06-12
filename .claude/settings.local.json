@@ -31,7 +31,14 @@
       "Bash(echo \"home: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/\\)\")",
       "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/about)",
       "Bash(echo \"about: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/about\\)\")",
-      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/fonts)"
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/fonts)",
+      "Bash(echo \"home windowed: $\\(curl -s http://localhost:4321/)",
+      "Bash(echo \"about status: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/about\\)\")",
+      "Bash(curl -s http://localhost:4321/about)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/career)",
+      "Bash(echo \"career: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/career\\)\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/colophon)",
+      "Bash(echo \"colophon: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/colophon\\)\")"
     ]
   }
 }

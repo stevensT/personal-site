@@ -1,0 +1,65 @@
+---
+/**
+ * Career page (/career) — a concise, factual bullet list (no flowery prose),
+ * per buildspec.md. Grouped into Military, Tech / Networking, and Education.
+ *
+ * Some items are PLACEHOLDERS for Trevor to confirm/fill in (marked "TODO" in
+ * the data below and shown muted on the page) — exact dates, rank, and any
+ * formal network-engineering roles weren't available when this was scaffolded.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Each section is a heading + a list of bullet strings. Items wrapped in a
+// `todo` flag render muted, as a visible reminder of what's left to confirm.
+const sections = [
+  {
+    heading: 'Military',
+    items: [
+      { text: 'U.S. Air Force — enlisted after high school; trained as a flight engineer.' },
+      { text: 'HH-60 Pavehawk flight engineer, stationed in Tucson, AZ.' },
+      { text: 'Primary mission: combat search and rescue (CSAR); civil rescues off-deployment.' },
+      { text: 'Deployments to Iraq, Afghanistan, and the Horn of Africa.' },
+      { text: 'Currently a full-time Air Force reservist.' },
+      { text: 'TODO: years of service, rank, and key dates.', todo: true },
+    ],
+  },
+  {
+    heading: 'Tech / Networking',
+    items: [
+      { text: 'Building a home lab — self-hosting services and hands-on networking.' },
+      { text: 'Working toward a network engineer role.' },
+      { text: 'Self-teaching full-stack web development and DevOps.' },
+      { text: 'TODO: formal network-engineering roles, titles, and certifications.', todo: true },
+    ],
+  },
+  {
+    heading: 'Education',
+    items: [
+      { text: 'B.A.S. in Network Operations — University of Arizona.' },
+      { text: 'A.A.S. in Systems Administration / Networking (cybersecurity concentration).' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Career — Trevor Stevens"
+  description="Trevor Stevens' career — U.S. Air Force flight engineer (HH-60 Pavehawk, combat search and rescue), home-lab networking, and self-taught development."
+>
+  <h1 class="text-3xl font-bold">Career</h1>
+
+  {
+    sections.map((section) => (
+      <section class="mt-8">
+        <h2 class="font-mono text-sm uppercase tracking-wide text-accent">
+          {section.heading}
+        </h2>
+        <ul class="mt-3 space-y-2 list-disc pl-5 text-lg leading-relaxed marker:text-accent">
+          {section.items.map((item) => (
+            <li class={item.todo ? 'text-muted italic' : 'text-text'}>{item.text}</li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</BaseLayout>

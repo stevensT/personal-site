@@ -1,27 +1,34 @@
 ---
 /**
- * Nav — primary site navigation, rendered at the top of every page by BaseLayout.
+ * Nav — primary site navigation, rendered at the top of the non-home pages by
+ * BaseLayout. (Home uses the AppWindow's keyboard-hint nav instead.)
  *
- * Links to the top-level pages. Blog is not built until Phase 5, so it will 404
- * until then — expected during construction. There is no Contact page by design;
- * contact info lives in the Footer instead.
+ * Some targets (Career, Blog, Colophon) 404 until those pages are built —
+ * expected during construction. There is no Contact page by design; contact
+ * lives in the Footer.
  *
  * No props.
  */
 
 // Single source of truth for the nav links. Adding a page later = adding one
-// entry here, rather than editing markup in several places.
+// entry here. Home is reached via the prompt link on the left, and Colophon is
+// intentionally home-only, so neither appears in this list.
 const links = [
-  { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
-  { href: '/projects', label: 'Projects' },
+  { href: '/career', label: 'Career' },
   { href: '/blog', label: 'Blog' },
 ];
 ---
 
-<header class="border-b border-line">
+<header>
   <nav class="max-w-[700px] mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="/" class="font-heading font-bold text-lg text-text">Trevor Stevens</a>
+    <!-- Terminal-style link back home (replaces a plain name/brand). -->
+    <a
+      href="/"
+      class="font-mono text-sm text-muted transition-colors hover:text-accent"
+    >
+      <span class="text-accent">stanferd@csar:~$</span> cd ~
+    </a>
     <ul class="flex gap-4 text-sm font-mono">
       {
         links.map((link) => (

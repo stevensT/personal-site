@@ -29,6 +29,23 @@
 }
 
 /*
+ * Light theme — set by the [d] toggle (and the title-bar sun icon), persisted in
+ * localStorage. It works by OVERRIDING the color tokens above when
+ * <html data-theme="light"> is present. Because every `bg-bg` / `text-text`
+ * utility resolves to var(--color-*), changing these variables reskins the whole
+ * site without touching any markup. Dark (the :root values) stays the default.
+ */
+html[data-theme="light"] {
+  --color-page: #e9ecef;     /* light desktop behind the window */
+  --color-bg: #ffffff;       /* window interior */
+  --color-elevated: #f3f5f7; /* title/footer bars */
+  --color-text: #1f2328;     /* near-black body text */
+  --color-accent: #138a2c;   /* slightly darker green for contrast on white */
+  --color-muted: #6b7280;    /* secondary gray */
+  --color-line: #d0d7de;     /* borders */
+}
+
+/*
  * The signature blinking cursor animation. Defined globally so any element can
  * reuse it (the Cursor component, the home tagline, etc.). steps(1) makes it a
  * hard on/off blink rather than a smooth fade — more "real terminal".

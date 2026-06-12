@@ -12,8 +12,12 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 4.5 — Terminal restyle (design pivot from `buildspec.md`),
-  then Phase 5 — Blog. (Phases 0–4 complete.)
+- **Current phase:** Phase 4.5 — Terminal restyle — **essentially complete**.
+  Terminal aesthetic shipped: dark theme tokens + Option-B fonts, AppWindow on
+  Home only, keyboard nav + theme toggle + help overlay, inner-page Nav/Footer
+  (prompt `cd ~` home link), Home/About/Career/Colophon all styled. **Open:**
+  delete unlinked `projects.astro` (pending okay); `/blog` still 404 → Phase 5.
+  All changes uncommitted, awaiting review. Next: **Phase 5 — Blog.**
 - **Done so far:** Planning + Phases 0–4. Spec written. Decisions locked (stack,
   repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
@@ -218,13 +222,20 @@ in layers. Each phase ends with something you can see in the browser.
 - [x] Restyle `BaseLayout` to dark terminal (tokens + fonts in global.css)
 - [x] Add `Prompt` + `Cursor` components
 - [ ] Rework `Nav` into inline keyboard hints (`[a] about  [b] blog  ...`)
-- [ ] Add `KeyboardNav` script (keydown → route) and `ThemeToggle` (`[d]`, dark
-      default, persisted) + a `[h]` help overlay
+- [x] Add `KeyboardNav` script (keydown → route) and `ThemeToggle` (`[d]`, dark
+      default, persisted) + a `[h]` help overlay — all wired in BaseLayout. Light
+      theme = CSS-variable override under `html[data-theme="light"]`. Anti-flash
+      inline `<head>` script. Sun icon mirrors `[d]`. (Routes b/c/x 404 until
+      their pages exist — expected.)
 - [x] Rebuild Home (`index.astro`) to the spec mockup: prompt, name, tagline,
       quote + blinking cursor, 📍 Arizona, keybind row (keys display-only for now)
-- [ ] Add `career.astro`; **delete** `projects.astro` (confirm with Trevor first)
-- [ ] Add `colophon.astro` (built with Astro / Cloudflare Pages / VS Code)
-- [ ] Rewrite About with the military + homelab bio from the spec
+- [x] Add `career.astro` (Military/Tech/Education bullets; 2 muted TODO items
+      for years/rank + formal network roles). **`projects.astro` still on disk,
+      unlinked — delete pending Trevor's okay.**
+- [x] Add `colophon.astro` (stack + design choices; reachable via [x], home-only
+      in nav)
+- [x] Rewrite About — already in Trevor's real voice (USAF, HH-60 Pavehawk, CSAR,
+      Tucson, home lab, degrees); only reworded if Trevor wants changes
 - [ ] Verify keyboard nav + theme toggle work and dark renders correctly
 
 ### Phase 5 — Blog
