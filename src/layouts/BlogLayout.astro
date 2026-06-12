@@ -1,0 +1,46 @@
+---
+/**
+ * BlogLayout — the shell for a single blog post.
+ *
+ * Wraps BaseLayout (so a post gets the same site chrome as other inner pages),
+ * adds the post header (title, date, tags), and renders the post body in a
+ * `.post-body` wrapper that global.css styles like an article.
+ *
+ * Props:
+ *   - post: the blog collection entry being rendered. Its Markdown body is
+ *           passed in via <slot /> by the route that uses this layout.
+ */
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, date, tags } = post.data;
+
+// timeZone: 'UTC' so the displayed date matches the frontmatter (a bare YAML
+// date is UTC midnight; a local zone west of UTC would show the day before).
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<BaseLayout title={`${title} — Trevor Stevens`} description={description}>
+  <article>
+    <h1 class="text-3xl font-bold">{title}</h1>
+    <p class="mt-2 font-mono text-sm text-muted">
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+      {tags.length > 0 && <span> · {tags.join(', ')}</span>}
+    </p>
+
+    <!-- The rendered Markdown lands here; .post-body styles its elements. -->
+    <div class="post-body mt-8 text-lg text-text">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

@@ -6,6 +6,7 @@
  * Copy supplied by Trevor; kept in his own voice.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WorldMap from '../components/WorldMap.astro';
 ---
 
 <BaseLayout
@@ -14,39 +15,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 >
   <h1 class="text-3xl font-bold">About</h1>
 
-  <!--
-    prose-style spacing without the Tailwind typography plugin: each paragraph
-    gets top margin and relaxed line height for comfortable reading.
-  -->
+  <!-- Location line, terminal-style. -->
+  <p class="mt-3 font-mono text-sm text-muted">📍 Tucson, Arizona</p>
+
+  <!-- Concise bio (kept in Trevor's voice). Fuller history lives on /career. -->
   <div class="mt-6 space-y-4 text-text text-lg leading-relaxed">
     <p>
-      Hello, my name is Trevor, but I sometimes go by Stanferd. I grew up in a
-      small town in central California. From the start, I had a keen interest in
-      computers and electronics.
+      I'm a rescue airman turned systems tinkerer. I fly the HH-60W Jolly Green II as a
+      combat search and rescue(CSAR) flight engineer. I have multiple tours to Iraq, Afghanistan,
+      and the Horn of Africa — and still serve full-time as an Air Force reservist.
     </p>
     <p>
-      After high school I enlisted in the U.S. Air Force and shipped off to train
-      as a flight engineer. After about a year of flight school, I was stationed
-      in Tucson, AZ, flying the HH-60 Pavehawk helicopter. Our main mission is
-      combat search and rescue, but we also pick up our share of civil rescues
-      when we're not deployed. I've completed multiple tours to Iraq,
-      Afghanistan, and the Horn of Africa.
-    </p>
-    <p>
-      I've lived in Tucson since 2006 and still work full-time as an Air Force
-      reservist.
-    </p>
-    <p>
-      Off alert, and not spending time with family, I tinker with my computers
-      and networking equipment. Over the years I've built a solid home lab, which
-      I use to host services locally and work toward becoming a network engineer.
-      I'm also teaching myself full-stack web development and DevOps. But lately
-      my obsession has been agentic AI, LLMs, and &ldquo;vibe coding&rdquo;.
-    </p>
-    <p>
-      I hold a Bachelor of Applied Science in Network Operations from the
-      University of Arizona, and an Associate of Applied Science in Systems
-      Administration/Networking with a core concentration in cybersecurity.
+      Off alert, I'm in my home lab: self-hosting services, working toward network
+      engineering, and teaching myself full-stack development and DevOps. Lately
+      I've been deep in agentic AI, LLMs, and &ldquo;vibe coding.&rdquo;
     </p>
   </div>
+
+  <!-- Now: a snapshot of the current role, with a link to the full history. -->
+  <section class="mt-10">
+    <h2 class="font-mono text-sm uppercase tracking-wide text-accent">Now</h2>
+    <p class="mt-3 text-lg text-text">
+      Air Force Reservist — HH-60W Jolly Green II Flight Engineer · Tucson, AZ
+    </p>
+    <p class="mt-2">
+      <a href="/career" class="font-mono text-sm text-muted transition-colors hover:text-accent">
+        Full career &rarr;
+      </a>
+    </p>
+  </section>
+
+  <!-- Where I've lived and been. Edit locations in WorldMap.astro. -->
+  <section class="mt-10">
+    <h2 class="font-mono text-sm uppercase tracking-wide text-accent">
+      Lived &amp; visited
+    </h2>
+    <div class="mt-4">
+      <WorldMap />
+    </div>
+  </section>
 </BaseLayout>

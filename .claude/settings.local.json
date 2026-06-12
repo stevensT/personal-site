@@ -38,7 +38,19 @@
       "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/career)",
       "Bash(echo \"career: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/career\\)\")",
       "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/colophon)",
-      "Bash(echo \"colophon: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/colophon\\)\")"
+      "Bash(echo \"colophon: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/colophon\\)\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/blog)",
+      "Bash(echo \"blog index: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/blog\\)\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/blog/hello-world)",
+      "Bash(echo \"post: $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:4321/blog/hello-world\\)\")",
+      "Bash(curl -s http://localhost:4321/blog)",
+      "Bash(echo \"=== world-map element context ===\"; grep -ioE '<[^>]*world-map[^>]*>' /tmp/ah_about.html | head; echo; echo \"=== marker markup ===\"; grep -ioE '<[^>]*marker[^>]*>' /tmp/ah_about.html | head; echo; echo \"=== css for world-map / marker ===\"; grep -oE 'world-map[^{]*\\\\{[^}]*\\\\}|\\\\.marker[^{]*\\\\{[^}]*\\\\}|\\\\.pin[^{]*\\\\{[^}]*\\\\}' /tmp/ah_about.html | head -20; echo; echo \"=== svg tags ===\"; grep -oE '<svg[^>]*>' /tmp/ah_about.html | head; echo; echo \"=== img with map/world/svg in name ===\"; grep -oiE '<img[^>]*\\(world|map\\)[^>]*>' /tmp/ah_about.html | head)",
+      "Bash(curl -s -L \"https://raw.githubusercontent.com/martynafford/natural-earth-geojson/master/110m/physical/ne_110m_land.json\" -o /tmp/ne_land.json -w \"HTTP %{http_code}\\\\n\")",
+      "Bash(mkdir -p scripts/data src/data)",
+      "Bash(cp /tmp/ne_land.json scripts/data/ne_110m_land.json)",
+      "Bash(node scripts/gen-world-dots.mjs)",
+      "Bash(echo \"marker groups: $\\(curl -s http://localhost:4321/about)",
+      "Bash(grep -oE 'About Alex.{0,1100}')"
     ]
   }
 }

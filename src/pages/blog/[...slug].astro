@@ -1,0 +1,27 @@
+---
+/**
+ * Single blog post route (/blog/<slug>).
+ *
+ * ONE file generates a page for EVERY post. getStaticPaths() runs at build time,
+ * enumerates the collection, and emits a static page per entry — the file name
+ * (post.id) is the slug. render(post) compiles the Markdown into a <Content />
+ * component we drop into BlogLayout.
+ */
+import { getCollection, render } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogLayout post={post}>
+  <Content />
+</BlogLayout>

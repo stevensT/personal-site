@@ -1,0 +1,41 @@
+---
+/**
+ * PostCard — a preview tile for one blog post in the /blog list.
+ *
+ * The whole card is a single link to the post. Shows date + tags, title, and
+ * the post's description.
+ *
+ * Props:
+ *   - post: a blog collection entry (carries the frontmatter in `post.data`).
+ */
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, date, tags } = post.data;
+
+// Human-readable date, computed at build time. timeZone: 'UTC' keeps the date
+// as written in frontmatter (a bare YAML date is parsed as UTC midnight, so
+// formatting in a local zone west of UTC would otherwise show the day before).
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<a
+  href={`/blog/${post.id}`}
+  class="block rounded-lg border border-line p-5 transition-colors hover:border-accent"
+>
+  <p class="font-mono text-xs text-muted">
+    <time datetime={date.toISOString()}>{formattedDate}</time>
+    {tags.length > 0 && <span> · {tags.join(', ')}</span>}
+  </p>
+  <h2 class="mt-1 font-heading text-xl font-bold text-text">{title}</h2>
+  <p class="mt-2 leading-relaxed text-muted">{description}</p>
+</a>

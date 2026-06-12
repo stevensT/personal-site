@@ -12,12 +12,14 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 4.5 — Terminal restyle — **essentially complete**.
-  Terminal aesthetic shipped: dark theme tokens + Option-B fonts, AppWindow on
-  Home only, keyboard nav + theme toggle + help overlay, inner-page Nav/Footer
-  (prompt `cd ~` home link), Home/About/Career/Colophon all styled. **Open:**
-  delete unlinked `projects.astro` (pending okay); `/blog` still 404 → Phase 5.
-  All changes uncommitted, awaiting review. Next: **Phase 5 — Blog.**
+- **Current phase:** Phase 5 — Blog — **complete**. Content collection + schema,
+  `/blog` index, single-post route, `BlogLayout`, `PostCard`, `.post-body` prose
+  styles, and a sample post (`hello-world.md`) all working; `[b] ~/blog` resolves.
+  Phase 4.5 terminal restyle also done (AppWindow on Home, keyboard nav/theme
+  toggle/help, inner-page Nav/Footer). **Open:** delete unlinked `projects.astro`
+  (pending okay); Career has 2 TODO placeholders (years/rank, network roles).
+  All changes uncommitted, awaiting review. Next: **Phase 6 — Polish** (favicon,
+  SEO/meta tags, mobile-width checks).
 - **Done so far:** Planning + Phases 0–4. Spec written. Decisions locked (stack,
   repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
@@ -238,12 +240,15 @@ in layers. Each phase ends with something you can see in the browser.
       Tucson, home lab, degrees); only reworded if Trevor wants changes
 - [ ] Verify keyboard nav + theme toggle work and dark renders correctly
 
-### Phase 5 — Blog
-- [ ] Define the `blog` content collection schema (title, date, description, tags)
-- [ ] Add `BlogLayout`
-- [ ] Build `/blog` index page listing posts (using `PostCard`)
-- [ ] Build the single-post route (`[...slug].astro`)
-- [ ] Write one sample Markdown post to prove the pipeline end-to-end
+### Phase 5 — Blog  ✅ complete
+- [x] Define the `blog` content collection schema (title, date, description, tags)
+      — `src/content.config.ts`, glob loader + zod schema
+- [x] Add `BlogLayout` — `src/layouts/BlogLayout.astro` (post header + .post-body)
+- [x] Build `/blog` index page listing posts (using `PostCard`) — newest-first
+- [x] Build the single-post route (`[...slug].astro`) — getStaticPaths + render()
+- [x] Write one sample Markdown post — `src/content/blog/hello-world.md`
+- Notes: prose styled by hand in global.css `.post-body` (no typography plugin —
+  ask before installing). Fixed a UTC date-off-by-one in the date formatters.
 
 ### Phase 6 — Polish
 - [ ] Add favicon and basic site metadata (title, description) in `<head>`

@@ -1,0 +1,228 @@
+---
+/**
+ * WorldMap — a dot-matrix world map showing where Trevor has lived and visited.
+ *
+ * The land is a grid of dots generated at author-time (see
+ * scripts/gen-world-dots.mjs -> src/data/world-dots.json), so there's no map
+ * library or runtime dependency. Location markers are overlaid by projecting
+ * lat/lon with the SAME equirectangular maths the generator used.
+ *
+ * To edit the map, change the `locations` array below (lat/lon in degrees,
+ * type 'lived' or 'visited'). Hover a marker to see its name.
+ *
+ * No props.
+ */
+import worldDots from '../data/world-dots.json';
+
+type Location = {
+  name: string;
+  lat: number;
+  lon: number;
+  type: 'lived' | 'visited';
+};
+
+// Locations to plot. Coordinates are approximate city/country centers — fine
+// for a map at this scale. Edit freely; add { name, lat, lon, type }.
+const locations: Location[] = [
+  // --- Lived ---
+  { name: 'Turlock, CA (hometown)', lat: 37.49, lon: -120.85, type: 'lived' },
+  { name: 'Tucson, AZ', lat: 32.22, lon: -110.97, type: 'lived' },
+  { name: 'Albuquerque, NM', lat: 35.08, lon: -106.65, type: 'lived' },
+
+  // --- Visited: Asia & Pacific ---
+  { name: 'Tokyo, Japan', lat: 35.68, lon: 139.69, type: 'visited' },
+  { name: 'Osaka, Japan', lat: 34.69, lon: 135.5, type: 'visited' },
+  { name: 'Okinawa, Japan', lat: 26.21, lon: 127.68, type: 'visited' },
+  { name: 'Busan, South Korea', lat: 35.18, lon: 129.08, type: 'visited' },
+  { name: 'Philippines', lat: 14.6, lon: 120.98, type: 'visited' },
+  { name: 'Guam', lat: 13.47, lon: 144.75, type: 'visited' },
+  { name: 'Hawaii', lat: 21.31, lon: -157.86, type: 'visited' },
+
+  // --- Visited: Alaska, Pacific NW & western Canada ---
+  { name: 'Fairbanks, AK', lat: 64.84, lon: -147.72, type: 'visited' },
+  { name: 'Juneau, AK', lat: 58.3, lon: -134.42, type: 'visited' },
+  { name: 'Victoria, BC', lat: 48.43, lon: -123.37, type: 'visited' },
+  { name: 'Vancouver, BC', lat: 49.28, lon: -123.12, type: 'visited' },
+  { name: 'Washington (state)', lat: 47.61, lon: -122.33, type: 'visited' },
+  { name: 'Portland, OR', lat: 45.52, lon: -122.68, type: 'visited' },
+  { name: 'Boise, ID', lat: 43.62, lon: -116.21, type: 'visited' },
+  { name: 'Bozeman, MT', lat: 45.68, lon: -111.04, type: 'visited' },
+  { name: 'Salt Lake City, UT', lat: 40.76, lon: -111.89, type: 'visited' },
+  { name: 'Denver, CO', lat: 39.74, lon: -104.99, type: 'visited' },
+
+  // --- Visited: USA central / south / east ---
+  { name: 'Dallas/Ft Worth, TX', lat: 32.82, lon: -97.06, type: 'visited' },
+  { name: 'San Antonio, TX', lat: 29.42, lon: -98.49, type: 'visited' },
+  { name: 'Nashville, TN', lat: 36.16, lon: -86.78, type: 'visited' },
+  { name: 'Chicago, IL', lat: 41.88, lon: -87.63, type: 'visited' },
+  { name: 'Detroit, MI', lat: 42.33, lon: -83.05, type: 'visited' },
+  { name: 'Atlanta, GA', lat: 33.75, lon: -84.39, type: 'visited' },
+  { name: 'Miami, FL', lat: 25.76, lon: -80.19, type: 'visited' },
+  { name: 'Washington, DC', lat: 38.91, lon: -77.04, type: 'visited' },
+  { name: 'New York City', lat: 40.71, lon: -74.01, type: 'visited' },
+  { name: 'San Diego, CA', lat: 32.72, lon: -117.16, type: 'visited' },
+  { name: 'San Francisco, CA', lat: 37.77, lon: -122.42, type: 'visited' },
+
+  // --- Visited: eastern Canada ---
+  { name: 'Montreal, QC', lat: 45.5, lon: -73.57, type: 'visited' },
+
+  // --- Visited: Europe ---
+  { name: 'London, UK', lat: 51.51, lon: -0.13, type: 'visited' },
+  { name: 'Oslo, Norway', lat: 59.91, lon: 10.75, type: 'visited' },
+  { name: 'Stockholm, Sweden', lat: 59.33, lon: 18.06, type: 'visited' },
+  { name: 'Copenhagen, Denmark', lat: 55.68, lon: 12.57, type: 'visited' },
+  { name: 'Ramstein, Germany', lat: 49.44, lon: 7.6, type: 'visited' },
+  { name: 'Rome, Italy', lat: 41.9, lon: 12.5, type: 'visited' },
+  { name: 'Florence, Italy', lat: 43.77, lon: 11.26, type: 'visited' },
+  { name: 'Venice, Italy', lat: 45.44, lon: 12.34, type: 'visited' },
+  { name: 'Genoa, Italy', lat: 44.41, lon: 8.93, type: 'visited' },
+  { name: 'Rota, Spain', lat: 36.62, lon: -6.36, type: 'visited' },
+
+  // --- Visited: Latin America & Caribbean ---
+  { name: 'Cabo San Lucas, Mexico', lat: 22.89, lon: -109.92, type: 'visited' },
+  { name: 'Cancún, Mexico', lat: 21.16, lon: -86.85, type: 'visited' },
+  { name: 'Grand Cayman', lat: 19.29, lon: -81.38, type: 'visited' },
+  { name: 'Jamaica', lat: 18.11, lon: -77.3, type: 'visited' },
+  { name: 'Santo Domingo, DR', lat: 18.49, lon: -69.93, type: 'visited' },
+  { name: 'St. Lucia', lat: 13.91, lon: -60.98, type: 'visited' },
+  { name: 'Santiago, Chile', lat: -33.45, lon: -70.67, type: 'visited' },
+
+  // --- Visited: Middle East & Africa (deployments) ---
+  { name: 'Iraq', lat: 33.31, lon: 44.36, type: 'visited' },
+  { name: 'Qatar', lat: 25.29, lon: 51.53, type: 'visited' },
+  { name: 'Afghanistan', lat: 34.52, lon: 69.18, type: 'visited' },
+  { name: 'Djibouti', lat: 11.59, lon: 43.15, type: 'visited' },
+  { name: 'Somalia', lat: 2.05, lon: 45.32, type: 'visited' },
+];
+
+const { width, height, dots } = worldDots;
+
+// Geographic coordinate -> pixel, matching the generator's projection exactly.
+const project = (lat: number, lon: number) => ({
+  x: ((lon + 180) / 360) * width,
+  y: ((90 - lat) / 180) * height,
+});
+
+const markers = locations.map((loc) => ({ ...loc, ...project(loc.lat, loc.lon) }));
+---
+
+<figure class="world-map-fig">
+  <svg
+    viewBox={`0 0 ${width} ${height}`}
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="World map showing places Trevor has lived and visited"
+    class="world-map"
+  >
+    <!-- Land: the generated dot grid. -->
+    <g class="land">
+      {dots.map(([x, y]) => <circle cx={x} cy={y} r="1.5" />)}
+    </g>
+
+    <!-- Markers -->
+    {
+      markers.map((m) =>
+        m.type === 'visited' ? (
+          <g class="marker visited">
+            <title>{m.name} — visited</title>
+            <circle cx={m.x} cy={m.y} r="3.2" class="ring" />
+          </g>
+        ) : (
+          <g class="marker lived">
+            <title>{m.name} — lived</title>
+            <circle cx={m.x} cy={m.y} r="5.5" class="pulse" />
+            <circle cx={m.x} cy={m.y} r="2.6" class="dot" />
+          </g>
+        ),
+      )
+    }
+  </svg>
+
+  <!-- Legend -->
+  <figcaption class="legend">
+    <span class="legend-item">
+      <span class="swatch swatch-lived"></span> Lived
+    </span>
+    <span class="legend-item">
+      <span class="swatch swatch-visited"></span> Visited
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .world-map {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    padding: 0.75rem;
+  }
+
+  /* Land dots — muted and quiet so markers stand out. */
+  .land circle {
+    fill: var(--color-muted);
+    opacity: 0.35;
+  }
+
+  /* Visited: a hollow accent ring. */
+  .marker.visited .ring {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+  }
+
+  /* Lived: a solid dot with an animated pulse behind it. */
+  .marker.lived .dot {
+    fill: var(--color-accent);
+  }
+  .marker.lived .pulse {
+    fill: var(--color-accent);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: map-pulse 2.4s ease-out infinite;
+  }
+  @keyframes map-pulse {
+    0% {
+      transform: scale(0.4);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marker.lived .pulse {
+      animation: none;
+      opacity: 0.25;
+    }
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .swatch {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 9999px;
+    display: inline-block;
+  }
+  .swatch-lived {
+    background: var(--color-accent);
+  }
+  .swatch-visited {
+    border: 1.5px solid var(--color-accent);
+  }
+</style>

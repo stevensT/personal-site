@@ -1,0 +1,38 @@
+---
+/**
+ * Blog index (/blog) — lists every post, newest first, as PostCards.
+ *
+ * getCollection('blog') reads all the Markdown posts (validated against the
+ * schema in src/content.config.ts). We sort by date descending so the most
+ * recent post is on top.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Blog — Trevor Stevens"
+  description="Notes and home-lab write-ups from Trevor Stevens — learning in public."
+>
+  <h1 class="text-3xl font-bold">Blog</h1>
+  <p class="mt-4 text-lg text-muted">
+    Notes and home-lab write-ups — learning in public.
+  </p>
+
+  {
+    posts.length > 0 ? (
+      <div class="mt-8 flex flex-col gap-4">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <p class="mt-8 text-muted">No posts yet — check back soon.</p>
+    )
+  }
+</BaseLayout>

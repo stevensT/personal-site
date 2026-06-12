@@ -55,3 +55,65 @@ html[data-theme="light"] {
     opacity: 0;
   }
 }
+
+/*
+ * Article body styles for rendered Markdown (blog posts). We style elements
+ * directly here rather than add the Tailwind typography plugin, since rendered
+ * Markdown HTML can't carry utility classes. Colors use the @theme tokens, so
+ * this respects the light/dark theme automatically.
+ */
+.post-body > * + * {
+  margin-top: 1rem; /* vertical rhythm between blocks */
+}
+.post-body h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+}
+.post-body h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+}
+.post-body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+.post-body ul,
+.post-body ol {
+  padding-left: 1.5rem;
+}
+.post-body ul {
+  list-style: disc;
+}
+.post-body ol {
+  list-style: decimal;
+}
+.post-body li::marker {
+  color: var(--color-accent);
+}
+.post-body blockquote {
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1rem;
+  color: var(--color-muted);
+  font-style: italic;
+}
+/* Inline code */
+.post-body :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-elevated);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+/* Fenced code blocks (Astro/Shiki sets pre's own background inline) */
+.post-body pre {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+}
