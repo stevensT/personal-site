@@ -50,7 +50,12 @@
       "Bash(cp /tmp/ne_land.json scripts/data/ne_110m_land.json)",
       "Bash(node scripts/gen-world-dots.mjs)",
       "Bash(echo \"marker groups: $\\(curl -s http://localhost:4321/about)",
-      "Bash(grep -oE 'About Alex.{0,1100}')"
+      "Bash(grep -oE 'About Alex.{0,1100}')",
+      "Bash(git --version)",
+      "PowerShell(node --version)",
+      "PowerShell(npm --version)",
+      "PowerShell($env:OS; \\(Get-Command node -ErrorAction SilentlyContinue\\).Source; \"git user: $\\(git config user.name\\)\"; \"branch: $\\(git branch --show-current\\)\")",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); npm install)"
     ]
   }
 }

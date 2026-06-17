@@ -236,7 +236,7 @@ in layers. Each phase ends with something you can see in the browser.
       unlinked — delete pending Trevor's okay.**
 - [x] Add `colophon.astro` (stack + design choices; reachable via [x], home-only
       in nav)
-- [x] Rewrite About — already in Trevor's real voice (USAF, HH-60 Pavehawk, CSAR,
+- [x] Rewrite About — already in Trevor's real voice (USAF, HH-60W Jolly Green II, CSAR,
       Tucson, home lab, degrees); only reworded if Trevor wants changes
 - [ ] Verify keyboard nav + theme toggle work and dark renders correctly
 
@@ -294,6 +294,11 @@ in layers. Each phase ends with something you can see in the browser.
 - **Keybinds (canonical):** `[a]` about · `[b]` blog (route `/blog`, not
   `/writing`) · `[c]` career · `[x]` colophon · `[d]` toggle theme · `[h]` help.
 - **Theme:** dark is default; `[d]` toggles to light, choice persisted.
+- **Aircraft:** **HH-60W Jolly Green II** (CSAR), *not* the HH-60 Pavehawk (that's
+  the older HH-60G). Trevor corrected this — use Jolly Green II everywhere.
+- **About page structure:** concise snapshot only — bio → **Now** (current role) →
+  **"Full career →"** link to `/career`. Do **not** add an Education/Schooling
+  section to About; degrees live on Career. (Rejected as redundant by decision.)
 
 ### Still needed (from Trevor)
 - ~~**Font choice**~~ — **RESOLVED: Option B** (mixed). Space Grotesk headings ·
