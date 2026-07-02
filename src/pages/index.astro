@@ -14,11 +14,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Prompt from '../components/Prompt.astro';
 import Cursor from '../components/Cursor.astro';
 
-// The chosen tagline + quote (see todo.md §7 "Decisions").
+// The chosen tagline (see todo.md §7 "Decisions").
 const tagline =
   'Combat rescue flight engineer turned network builder, currently rebuilding his digital life from the ground up.';
-const quote =
-  'Rescue by day, building networks and systems by night.';
 
 // The keyboard-shortcut hints. Single source so the letters/labels stay in sync
 // when the Nav rework reuses them. (Routes are wired up in a later step.)
@@ -52,11 +50,6 @@ const keys = [
   <p class="font-heading mt-2 leading-relaxed">
     Combat Rescue. Network Engineer. DevOps.<br />
     {tagline}<Cursor />
-  </p>
-
-  <!-- Quote -->
-  <p class="mt-6 text-muted italic leading-relaxed">
-    <span class="text-accent not-italic">&gt;</span> "{quote}"
   </p>
 
   <!--

@@ -12,7 +12,16 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 6 — Polish — **complete** (pending review). Custom
+- **Current phase:** Phase 7 — Deploy — **complete. Site is LIVE at
+  `https://stanferd.dev`** (Cloudflare Pages, static, auto-builds on push to
+  `origin/main`). Repo `github.com/stevensT/personal-site`. Deploy gotcha for
+  next time: it must be a Cloudflare **Pages** project, not Workers — the Workers
+  Git flow runs `astro add cloudflare` and breaks the static build (see Phase 7
+  notes). **Phases 0–8 all complete** — `README.md` written and `CLAUDE.md`
+  Setup/Architecture updated to reflect the real project. **Only open items are
+  content:** 2 Career placeholders (service dates/rank, network roles) and an
+  `og:image` social-preview image, plus ongoing blog writing. Phase 6 recap below.
+- **Phase 6 — Polish (complete, pushed).** Custom
   terminal favicon (green `>_` on dark, `public/favicon.svg`), `site` set in
   `astro.config.mjs` (`https://stanferd.dev`), and full `<head>` SEO: canonical
   link + Open Graph + Twitter Card + `theme-color`, all driven by the existing
@@ -34,8 +43,7 @@
   (Node v22 here vs v24 on desktop). **Still open:** Career has 2 TODO
   placeholders (years/rank/dates, formal network roles) needing Trevor's real
   details; no `og:image` social-preview image yet.
-  All changes uncommitted, awaiting review. Next: **Phase 7 — Deploy** (GitHub
-  repo + push, Cloudflare Pages, custom domain).
+  Committed (`9d65294`) and pushed to `origin/main`.
 - **Done so far:** Planning + Phases 0–4. Spec written. Decisions locked (stack,
   repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
@@ -290,16 +298,28 @@ in layers. Each phase ends with something you can see in the browser.
       fixed a footer-bar overflow in `AppWindow` (added `flex-wrap` so the
       location/© / keybind row wraps instead of clipping `[h] help`).
 
-### Phase 7 — Deploy
-- [ ] Create a GitHub repo (via github.com or `gh`) and push the project to it
-- [ ] Connect the GitHub repo to Cloudflare Pages (auto-build on every push)
-- [ ] Confirm the production build succeeds and the `*.pages.dev` URL works
-- [ ] Point the custom domain at the site in Cloudflare (DNS), confirm it loads
+### Phase 7 — Deploy  ✅ complete
+- [x] Create a GitHub repo (via github.com or `gh`) and push the project to it —
+      `github.com/stevensT/personal-site`; `main` pushed and tracking `origin/main`.
+- [x] Connect the GitHub repo to Cloudflare Pages (auto-build on every push) —
+      **Gotcha:** the Cloudflare *Workers* Git flow auto-runs `astro add cloudflare`
+      (adds the `@astrojs/cloudflare` SSR adapter + wrangler) and fails the build.
+      This site is fully **static** (no adapter), so it must be a **Pages** project:
+      framework preset Astro, build `npm run build`, output `dist`, env
+      `NODE_VERSION=22`. No adapter needed.
+- [x] Confirm the production build succeeds and the `*.pages.dev` URL works — build
+      green; site serves static `dist/`.
+- [x] Point the custom domain at the site in Cloudflare (DNS) — **live at
+      `https://stanferd.dev`** (200, HTTPS, correct canonical/title; inner routes
+      308 → trailing-slash → 200, which is normal for Astro's static output).
 
-### Phase 8 — Documentation
-- [ ] Create `README.md` (what the project is, how to run it)
-- [ ] Update `CLAUDE.md`: replace placeholder Setup/Architecture with the real,
-      verified commands and structure
+### Phase 8 — Documentation  ✅ complete
+- [x] Create `README.md` — intro (Trevor's voice) + stack, local-dev commands,
+      project structure, how to add a blog post, and the Cloudflare deploy note.
+- [x] Update `CLAUDE.md`: replaced the stale "not yet scaffolded" Project Status,
+      the placeholder Setup, and the "not yet established" Architecture with the
+      real structure, commands, and design-system tokens. Noted `npx astro check`
+      still needs `@astrojs/check` + `typescript`.
 
 ---
 
