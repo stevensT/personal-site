@@ -1,29 +1,11 @@
 ---
 /**
- * Colophon page (/colophon) — how the site is built and the design choices
- * behind it, per buildspec.md. Content is factual about this project's stack,
- * so it's written out in full (no placeholders).
+ * Colophon page (/colophon) — how the site is built and the decisions behind
+ * it, written as short narrative sections (Stack, Typography, Design) rather
+ * than bullet lists. Content is factual about this project, so it's written out
+ * in full. Structure/voice modelled on alexhowells.com/colophon, credited below.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-// The build stack, shown as a simple labelled list.
-const stack = [
-  { label: 'Framework', value: 'Astro (static output — ships zero JS by default)' },
-  { label: 'Styling', value: 'Tailwind CSS v4 (design tokens via @theme)' },
-  { label: 'Language', value: 'TypeScript (strict mode)' },
-  { label: 'Hosting', value: 'Cloudflare Pages, deployed from GitHub' },
-  { label: 'Editor', value: 'VS Code' },
-];
-
-// The deliberate design decisions worth calling out.
-const choices = [
-  'A terminal / CLI aesthetic — the constraint is the personality.',
-  'Dark by default, with a [d] toggle to a light theme (your choice is remembered).',
-  'Keyboard-driven navigation: [a] about, [b] blog, [c] career, [x] colophon, [h] help.',
-  'Type system: Space Grotesk for headings, Newsreader for body, Space Mono for code.',
-  'The home page lives inside an "app window"; inner pages stay plain and quiet.',
-  'A blinking cursor after the tagline — the signature touch.',
-];
 ---
 
 <BaseLayout
@@ -32,27 +14,71 @@ const choices = [
 >
   <h1 class="text-3xl font-bold">Colophon</h1>
 
-  <p class="mt-6 text-text text-lg leading-relaxed">
-    A quick note on how this site is put together and why it looks the way it does.
+  <p class="mt-2 text-muted text-lg leading-relaxed">
+    How this site is built and the decisions behind it.
   </p>
 
-  <section class="mt-8">
-    <h2 class="font-mono text-sm uppercase tracking-wide text-accent">Built with</h2>
-    <ul class="mt-3 space-y-2 text-lg leading-relaxed">
-      {
-        stack.map((item) => (
-          <li class="text-text">
-            <span class="text-muted">{item.label}:</span> {item.value}
-          </li>
-        ))
-      }
-    </ul>
+  <section class="mt-10">
+    <h2 class="font-mono text-base uppercase tracking-wide text-accent">Credits</h2>
+    <p class="mt-3 text-text text-lg leading-relaxed">
+      The look, feel, and structure of this site are heavily inspired by
+      <a
+        href="https://alexhowells.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-accent underline-offset-4 hover:underline"
+        >Alex Howells</a
+      >. Credit where it's due.
+    </p>
   </section>
 
-  <section class="mt-8">
-    <h2 class="font-mono text-sm uppercase tracking-wide text-accent">Design choices</h2>
-    <ul class="mt-3 space-y-2 list-disc pl-5 text-lg leading-relaxed text-text marker:text-accent">
-      {choices.map((choice) => <li>{choice}</li>)}
-    </ul>
+  <section class="mt-10">
+    <h2 class="font-mono text-base uppercase tracking-wide text-accent">Stack</h2>
+    <p class="mt-3 text-text text-lg leading-relaxed">
+      This site runs on Astro 6. It builds to plain static HTML and ships no JavaScript 
+      unless a page actually needs it. Here that's a few dozen lines of vanilla JS for 
+      the keyboard shortcuts and the light/dark toggle, nothing else. Styling is Tailwind 
+      CSS v4. The colors, fonts, and spacing all live as tokens in one @theme block, so I 
+      change a value once and it updates everywhere. It's TypeScript in strict mode, 
+      written in VS Code. The code lives on GitHub, and Cloudflare Pages rebuilds and 
+      deploys it on every push. Nothing runs on my own hardware, and my home network stays 
+      off the internet. Isolated and secure.
+    </p>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="font-mono text-base uppercase tracking-wide text-accent">Typography</h2>
+    <p class="mt-3 text-text text-lg leading-relaxed">
+      Three fonts, each with a job. Space Grotesk is the display face: my name on 
+      the home page, the blog post titles. Newsreader does the reading, body copy 
+      and most of the text on pages like this one. Space Mono handles anything that 
+      should feel like a terminal: the prompt, the keyboard hints, those little 
+      green section labels, and code. All three come from Google Fonts.
+    </p>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="font-mono text-base uppercase tracking-wide text-accent">Design</h2>
+    <p class="mt-3 text-text text-lg leading-relaxed">
+      I kept the whole thing to a terminal look and let that decide everything
+      else. No pure black, no pure white. The terminal window is
+      <span class="whitespace-nowrap"><span class="mr-1.5 inline-block h-3 w-3 rounded-sm border border-line align-middle" style="background:#0d1117" aria-hidden="true"></span><code class="rounded bg-elevated px-1.5 py-0.5 font-mono text-[0.9em] text-accent">#0d1117</code></span> sitting on a near-black
+      desktop at <span class="whitespace-nowrap"><span class="mr-1.5 inline-block h-3 w-3 rounded-sm border border-line align-middle" style="background:#010409" aria-hidden="true"></span><code class="rounded bg-elevated px-1.5 py-0.5 font-mono text-[0.9em] text-accent">#010409</code></span>, text is a
+      soft off-white <span class="whitespace-nowrap"><span class="mr-1.5 inline-block h-3 w-3 rounded-sm border border-line align-middle" style="background:#c9d1d9" aria-hidden="true"></span><code class="rounded bg-elevated px-1.5 py-0.5 font-mono text-[0.9em] text-accent">#c9d1d9</code></span>, and the
+      one accent color, terminal green
+      <span class="whitespace-nowrap"><span class="mr-1.5 inline-block h-3 w-3 rounded-sm border border-line align-middle" style="background:#1cb03a" aria-hidden="true"></span><code class="rounded bg-elevated px-1.5 py-0.5 font-mono text-[0.9em] text-accent">#1cb03a</code></span>,
+      covers links, the prompt <span class="font-mono text-accent">$</span>, and the
+      blinking cursor. Dark is the default;
+      <span class="font-mono text-accent">[d]</span> switches to a light theme and
+      remembers it. The home page is dressed up as an app window with the macOS
+      traffic-light buttons; the inner pages stay plain so they're easy to read.
+      You can move around from the keyboard:
+      <span class="font-mono text-accent">[a]</span> about,
+      <span class="font-mono text-accent">[b]</span> blog,
+      <span class="font-mono text-accent">[c]</span> career,
+      <span class="font-mono text-accent">[x]</span> colophon,
+      <span class="font-mono text-accent">[h]</span> help. The blinking cursor
+      after the tagline is the one bit of flair.
+    </p>
   </section>
 </BaseLayout>

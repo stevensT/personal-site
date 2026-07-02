@@ -7,18 +7,30 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorldMap from '../components/WorldMap.astro';
+
+// Interests shown as a card grid below the bio. `note` is an optional subtitle
+// (e.g. a favorite team). Add/reorder by editing this list — the template maps
+// over it, so no markup changes are needed for a new interest.
+const interests = [
+  { emoji: '⛷️', label: 'Skiing' },
+  { emoji: '✈️', label: 'Travel' },
+  { emoji: '📷', label: 'Photography' },
+  { emoji: '🏠', label: 'Smart Home' },
+  { emoji: '⚾', label: 'Baseball', note: 'San Francisco Giants' },
+  { emoji: '🎮', label: 'PC Gaming' },
+];
 ---
 
 <BaseLayout
   title="About — Trevor Stevens"
   description="About Trevor Stevens (a.k.a. Stanferd) — Air Force reservist, home-lab tinkerer, and self-taught developer learning AI, full-stack, and DevOps."
 >
-  <h1 class="text-3xl font-bold">About Trevor</h1>
+  <h1 class="text-3xl font-bold">About</h1>
 
   <!-- Location line, terminal-style. -->
   <p class="mt-3 font-mono text-sm text-muted">📍 Tucson, Arizona</p>
 
-  <!-- Concise bio (kept in Trevor's voice). Fuller history lives on /career. -->
+  <!-- Concise bio. -->
   <div class="mt-6 space-y-4 text-text text-lg leading-relaxed">
     <p>
       I'm a rescue airman turned systems tinkerer. I fly the HH-60W Jolly Green II as a
@@ -26,15 +38,15 @@ import WorldMap from '../components/WorldMap.astro';
       and the Horn of Africa — and still serve full-time as an Air Force reservist.
     </p>
     <p>
-      Off alert, I'm in my home lab: self-hosting services, working toward network
-      engineering, and teaching myself full-stack development and DevOps. Lately
+      Off alert, I'm in my home lab: self-hosting services, working on my network
+      engineering skills, and teaching myself full-stack development and DevOps. Lately
       I've been deep in agentic AI, LLMs, and &ldquo;vibe coding.&rdquo;
     </p>
   </div>
 
   <!-- Now: a snapshot of the current role, with a link to the full history. -->
   <section class="mt-10">
-    <h2 class="font-mono text-sm uppercase tracking-wide text-accent">Now</h2>
+    <h2 class="font-mono text-base uppercase tracking-wide text-accent">Now</h2>
     <p class="mt-3 text-lg text-text">
       Air Force Reservist — HH-60W Jolly Green II Flight Engineer · Tucson, AZ
     </p>
@@ -45,9 +57,28 @@ import WorldMap from '../components/WorldMap.astro';
     </p>
   </section>
 
+  <!-- Interests: a card grid (emoji + label). Cards lift and turn accent green
+       on hover; the emoji scales via group-hover. Edit the list in frontmatter. -->
+  <section class="mt-10">
+    <h2 class="font-mono text-base uppercase tracking-wide text-accent">Interests</h2>
+    <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {
+        interests.map((it) => (
+          <div class="group rounded-xl border border-line bg-elevated px-3 py-5 text-center transition duration-200 hover:-translate-y-0.5 hover:border-accent">
+            <div class="text-3xl transition-transform duration-200 group-hover:scale-110">
+              {it.emoji}
+            </div>
+            <p class="mt-2 font-heading text-sm font-medium text-text">{it.label}</p>
+            {it.note && <p class="mt-0.5 text-xs text-muted">{it.note}</p>}
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
   <!-- Where I've lived and been. Edit locations in WorldMap.astro. -->
   <section class="mt-10">
-    <h2 class="font-mono text-sm uppercase tracking-wide text-accent">
+    <h2 class="font-mono text-base uppercase tracking-wide text-accent">
       Lived &amp; visited
     </h2>
     <div class="mt-4">

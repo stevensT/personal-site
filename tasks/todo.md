@@ -12,14 +12,30 @@
 
 - **Project location:** `C:\Users\Trevo\01_dev\personal-site` (moved out of
   OneDrive; use Git/GitHub — not file-sync — to move between computers).
-- **Current phase:** Phase 5 — Blog — **complete**. Content collection + schema,
-  `/blog` index, single-post route, `BlogLayout`, `PostCard`, `.post-body` prose
-  styles, and a sample post (`hello-world.md`) all working; `[b] ~/blog` resolves.
-  Phase 4.5 terminal restyle also done (AppWindow on Home, keyboard nav/theme
-  toggle/help, inner-page Nav/Footer). **Open:** delete unlinked `projects.astro`
-  (pending okay); Career has 2 TODO placeholders (years/rank, network roles).
-  All changes uncommitted, awaiting review. Next: **Phase 6 — Polish** (favicon,
-  SEO/meta tags, mobile-width checks).
+- **Current phase:** Phase 6 — Polish — **complete** (pending review). Custom
+  terminal favicon (green `>_` on dark, `public/favicon.svg`), `site` set in
+  `astro.config.mjs` (`https://stanferd.dev`), and full `<head>` SEO: canonical
+  link + Open Graph + Twitter Card + `theme-color`, all driven by the existing
+  per-page `title`/`description` props in BaseLayout. Mobile checked at 375px —
+  found + fixed a footer-bar overflow in `AppWindow` (added `flex-wrap`).
+  Deleted the two unlinked throwaway pages (`projects.astro`, `fonts.astro`).
+  Also (folded into Phase 6): regenerated `public/favicon.ico` — it was a PNG of
+  the *old Astro logo* (Safari/cached browsers use the `.ico`, not the SVG), now
+  rasterized from `favicon.svg` via sharp so both show the terminal glyph. Added
+  an **Interests** card grid to the About page (3-col / 2-col mobile, emoji +
+  label, accent hover lift; list is a frontmatter array): Skiing, Travel,
+  Photography, Smart Home, Baseball (SF Giants), PC Gaming. Rewrote the
+  **Colophon** page into narrative Stack / Typography / Design sections
+  (structure modelled on alexhowells.com/colophon) with real facts + hex
+  swatches, plus a Credits section crediting Alex Howells as the inspiration.
+  **Machine-move fix:** `node_modules` had been file-copied from the Windows box
+  (broken symlinks → non-executable bins), so `npm run build` failed with
+  "Permission denied"; fixed by `rm -rf node_modules && npm install` on this Mac
+  (Node v22 here vs v24 on desktop). **Still open:** Career has 2 TODO
+  placeholders (years/rank/dates, formal network roles) needing Trevor's real
+  details; no `og:image` social-preview image yet.
+  All changes uncommitted, awaiting review. Next: **Phase 7 — Deploy** (GitHub
+  repo + push, Cloudflare Pages, custom domain).
 - **Done so far:** Planning + Phases 0–4. Spec written. Decisions locked (stack,
   repo `personal-site` **public** under GitHub user `stevensT`, domain `stanferd.dev`).
   Git installed; `gh` installed + authenticated. Project relocated out of OneDrive.
@@ -219,11 +235,15 @@ in layers. Each phase ends with something you can see in the browser.
 - [x] Build a throwaway `/fonts` comparison page (all-mono vs. mono+Newsreader),
       load the candidate fonts, let Trevor pick — **Option B chosen**. Page still
       on disk at `src/pages/fonts.astro`; delete once fonts are wired site-wide.
-- [ ] Apply the chosen fonts + color tokens (`#0d1117` bg, `#c9d1d9` text,
-      `#1cb03a` accent, `#8b949e` muted) as CSS variables / Tailwind theme
+- [x] Apply the chosen fonts + color tokens (`#0d1117` bg, `#c9d1d9` text,
+      `#1cb03a` accent, `#8b949e` muted) as CSS variables / Tailwind theme —
+      done in `global.css` (`@theme` tokens + font vars); Google Fonts linked in
+      BaseLayout `<head>`. (Checkbox was stale.)
 - [x] Restyle `BaseLayout` to dark terminal (tokens + fonts in global.css)
 - [x] Add `Prompt` + `Cursor` components
-- [ ] Rework `Nav` into inline keyboard hints (`[a] about  [b] blog  ...`)
+- [x] Rework `Nav` into inline keyboard hints — done: `Nav.astro` renders a
+      terminal-style `stanferd@csar:~$ cd ~` home link + inline links; the `[a]`
+      `[b]` `[c]` keyboard shortcuts are wired via KeyboardNav. (Checkbox stale.)
 - [x] Add `KeyboardNav` script (keydown → route) and `ThemeToggle` (`[d]`, dark
       default, persisted) + a `[h]` help overlay — all wired in BaseLayout. Light
       theme = CSS-variable override under `html[data-theme="light"]`. Anti-flash
@@ -236,9 +256,14 @@ in layers. Each phase ends with something you can see in the browser.
       unlinked — delete pending Trevor's okay.**
 - [x] Add `colophon.astro` (stack + design choices; reachable via [x], home-only
       in nav)
-- [x] Rewrite About — already in Trevor's real voice (USAF, HH-60W Jolly Green II, CSAR,
+- [x] Rewrite About — already in Trevor's real voice (USAF, HH-60 Pavehawk, CSAR,
       Tucson, home lab, degrees); only reworded if Trevor wants changes
-- [ ] Verify keyboard nav + theme toggle work and dark renders correctly
+- [x] `projects.astro` deleted (Trevor okayed) along with the throwaway
+      `fonts.astro`; both were unlinked and shipping as live routes.
+- [~] Verify keyboard nav + theme toggle work and dark renders correctly —
+      dark renders correctly on every page (screenshotted at 375px). The keydown
+      handler + theme toggle are wired in BaseLayout; not manually key-tested in
+      a browser this session.
 
 ### Phase 5 — Blog  ✅ complete
 - [x] Define the `blog` content collection schema (title, date, description, tags)
@@ -250,10 +275,20 @@ in layers. Each phase ends with something you can see in the browser.
 - Notes: prose styled by hand in global.css `.post-body` (no typography plugin —
   ask before installing). Fixed a UTC date-off-by-one in the date formatters.
 
-### Phase 6 — Polish
-- [ ] Add favicon and basic site metadata (title, description) in `<head>`
-- [ ] Add per-page SEO tags (title/description)
-- [ ] Check pages look acceptable on mobile width
+### Phase 6 — Polish  ✅ complete (pending review)
+- [x] Add favicon and basic site metadata — custom terminal favicon
+      (`public/favicon.svg`, green `>_` on `#0d1117`); `<head>` already had
+      charset/viewport/title/description. Added `theme-color` (`#0d1117`) for
+      mobile browser chrome. `favicon.ico` regenerated from the SVG (was a PNG of
+      the old Astro logo — Safari/cached browsers use the `.ico`).
+- [x] Add per-page SEO tags — set `site: 'https://stanferd.dev'` in
+      `astro.config.mjs`; BaseLayout now emits a `canonical` link + Open Graph
+      (`og:type/title/description/url/site_name`) + Twitter Card tags, all driven
+      by the per-page `title`/`description` props. `og:image` deferred — add a
+      social-preview image later.
+- [x] Check pages look acceptable on mobile width — checked all pages at 375px;
+      fixed a footer-bar overflow in `AppWindow` (added `flex-wrap` so the
+      location/© / keybind row wraps instead of clipping `[h] help`).
 
 ### Phase 7 — Deploy
 - [ ] Create a GitHub repo (via github.com or `gh`) and push the project to it
@@ -294,11 +329,6 @@ in layers. Each phase ends with something you can see in the browser.
 - **Keybinds (canonical):** `[a]` about · `[b]` blog (route `/blog`, not
   `/writing`) · `[c]` career · `[x]` colophon · `[d]` toggle theme · `[h]` help.
 - **Theme:** dark is default; `[d]` toggles to light, choice persisted.
-- **Aircraft:** **HH-60W Jolly Green II** (CSAR), *not* the HH-60 Pavehawk (that's
-  the older HH-60G). Trevor corrected this — use Jolly Green II everywhere.
-- **About page structure:** concise snapshot only — bio → **Now** (current role) →
-  **"Full career →"** link to `/career`. Do **not** add an Education/Schooling
-  section to About; degrees live on Career. (Rejected as redundant by decision.)
 
 ### Still needed (from Trevor)
 - ~~**Font choice**~~ — **RESOLVED: Option B** (mixed). Space Grotesk headings ·

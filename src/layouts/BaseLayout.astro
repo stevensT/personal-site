@@ -35,6 +35,11 @@ const {
   description = 'Personal site of Trevor Stevens — learning to code, AI/LLMs, and DevOps in public.',
   windowed = false,
 } = Astro.props;
+
+// Absolute canonical URL for this page. `Astro.site` is the domain set in
+// astro.config.mjs; `Astro.url.pathname` is the current path. Social platforms
+// and search engines want absolute URLs, so we resolve against the site origin.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -46,7 +51,26 @@ const {
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
+
+    <!-- Browser UI color on mobile (address bar). Matches the dark page bg. -->
+    <meta name="theme-color" content="#0d1117" />
+
+    <!--
+      Open Graph + Twitter Card tags. These control how a link to the site looks
+      when shared (Slack, iMessage, Twitter/X, etc.). They reuse the page's own
+      title/description. og:image is intentionally omitted until a social preview
+      image exists — see tasks/todo.md.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Trevor Stevens" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
 
     <!--
       Google Fonts for the terminal type system (chosen "Option B"):

@@ -55,7 +55,16 @@
       "PowerShell(node --version)",
       "PowerShell(npm --version)",
       "PowerShell($env:OS; \\(Get-Command node -ErrorAction SilentlyContinue\\).Source; \"git user: $\\(git config user.name\\)\"; \"branch: $\\(git branch --show-current\\)\")",
-      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); npm install)"
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); npm install)",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('sharp'\\); console.log\\('sharp OK', require\\('sharp/package.json'\\).version\\)\")",
+      "WebFetch(domain:alexhowells.com)",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/605.1.15 \\(KHTML, like Gecko\\) Version/17.0 Safari/605.1.15\" \"https://alexhowells.com/about/\" -o /private/tmp/claude-501/-Users-trevor-Documents-01-dev-personal-site/03bf2e99-d292-4e8e-b443-51d3e4c3e325/scratchpad/howells.html -w \"HTTP %{http_code}\\\\n\")",
+      "Bash(python3 -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/605.1.15 \\(KHTML, like Gecko\\) Version/17.0 Safari/605.1.15' https://alexhowells.com/colophon/ -o /private/tmp/claude-501/-Users-trevor-Documents-01-dev-personal-site/03bf2e99-d292-4e8e-b443-51d3e4c3e325/scratchpad/howells-colophon.html -w 'HTTP %{http_code}\\\\n')",
+      "Skill(humanizer)",
+      "Skill(humanizer:*)"
     ]
   }
 }
