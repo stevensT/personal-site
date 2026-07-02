@@ -26,8 +26,10 @@ const year = new Date().getFullYear();
 
 // Keybind hints shown in the footer bar (the global ones, vs. the page-level
 // nav keys on the home body). Letters in accent green via the template below.
+// `href` makes the label a link (like the home-body nav). `help` has no route —
+// it toggles the overlay via the [h] key — so it stays plain text.
 const footerKeys = [
-  { key: 'x', label: 'colophon' },
+  { key: 'x', label: 'colophon', href: '/colophon' },
   { key: 'h', label: 'help' },
 ];
 
@@ -121,7 +123,14 @@ const socials = [
       {
         footerKeys.map((k) => (
           <span class="whitespace-nowrap">
-            <span class="text-accent">[{k.key}]</span> {k.label}
+            <span class="text-accent">[{k.key}]</span>{' '}
+            {k.href ? (
+              <a href={k.href} class="transition-colors hover:text-accent">
+                {k.label}
+              </a>
+            ) : (
+              k.label
+            )}
           </span>
         ))
       }
