@@ -1,16 +1,11 @@
 ---
 /**
- * About page (/about) — Trevor's bio.
- *
- * Uses BaseLayout for the shared shell; provides only the page content.
- * Copy supplied by Trevor; kept in his own voice.
+ * About page (/about) — bio, current role, interests, and the world map.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorldMap from '../components/WorldMap.astro';
 
-// Interests shown as a card grid below the bio. `note` is an optional subtitle
-// (e.g. a favorite team). Add/reorder by editing this list — the template maps
-// over it, so no markup changes are needed for a new interest.
+// Interests card grid. `note` is an optional subtitle (e.g. a favorite team).
 const interests = [
   { emoji: '⛷️', label: 'Skiing' },
   { emoji: '✈️', label: 'Travel' },
@@ -27,10 +22,8 @@ const interests = [
 >
   <h1 class="text-3xl font-bold">About</h1>
 
-  <!-- Location line, terminal-style. -->
   <p class="mt-3 font-mono text-sm text-muted">📍 Tucson, Arizona</p>
 
-  <!-- Concise bio. -->
   <div class="mt-6 space-y-4 text-text text-lg leading-relaxed">
     <p>
       I'm a rescue airman turned systems tinkerer. I fly the HH-60W Jolly Green II as a
@@ -44,7 +37,7 @@ const interests = [
     </p>
   </div>
 
-  <!-- Now: a snapshot of the current role, with a link to the full history. -->
+  <!-- Current role snapshot; /career has the full history. -->
   <section class="mt-10">
     <h2 class="font-mono text-base uppercase tracking-wide text-accent">Now</h2>
     <p class="mt-3 text-lg text-text">
@@ -57,8 +50,6 @@ const interests = [
     </p>
   </section>
 
-  <!-- Interests: a card grid (emoji + label). Cards lift and turn accent green
-       on hover; the emoji scales via group-hover. Edit the list in frontmatter. -->
   <section class="mt-10">
     <h2 class="font-mono text-base uppercase tracking-wide text-accent">Interests</h2>
     <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -76,7 +67,7 @@ const interests = [
     </div>
   </section>
 
-  <!-- Where I've lived and been. Edit locations in WorldMap.astro. -->
+  <!-- Locations are edited in WorldMap.astro. -->
   <section class="mt-10">
     <h2 class="font-mono text-base uppercase tracking-wide text-accent">
       Lived &amp; visited

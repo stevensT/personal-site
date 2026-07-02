@@ -1,10 +1,6 @@
 ---
 /**
- * Blog index (/blog) — lists every post, newest first, as PostCards.
- *
- * getCollection('blog') reads all the Markdown posts (validated against the
- * schema in src/content.config.ts). We sort by date descending so the most
- * recent post is on top.
+ * Blog index (/blog) — every post as a PostCard, newest first.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';

@@ -1,17 +1,13 @@
 ---
 /**
- * Footer — the normal site footer for non-home pages (Home uses the AppWindow
- * footer bar instead). Shows copyright and Trevor's social profile links.
- *
- * No props.
+ * Footer — for the non-home pages (home uses the AppWindow footer bar).
+ * Copyright, location, and social links. No props.
  */
 
-// Computed once at build time. WHY this works without client-side JS: Astro runs
-// this frontmatter when the site is built, so the year is baked into the HTML.
-// It updates whenever the site is rebuilt (e.g. on each deploy).
+// Baked in at build time; refreshes on each deploy.
 const year = new Date().getFullYear();
 
-// Label-only social links (handle lives in the href), matching the home window.
+// Label-only; the handle lives in the href. Matches the home window's list.
 const socials = [
   { label: 'github', href: 'https://github.com/stevensT' },
   { label: 'instagram', href: 'https://instagram.com/stevenstrevor' },
@@ -19,7 +15,7 @@ const socials = [
 ---
 
 <footer>
-  <!-- Divider is on the inner container so the line is content-width, not full page. -->
+  <!-- Border on the inner container so the divider is content-width, not full page. -->
   <div
     class="max-w-[700px] mx-auto px-4 py-6 flex flex-wrap justify-between gap-x-4 gap-y-2 text-sm text-muted font-mono border-t border-line"
   >
@@ -27,11 +23,8 @@ const socials = [
       <span>© {year} Trevor Stevens</span>
       <span>📍 Tucson, AZ 🌵</span>
     </span>
-    <!--
-      External links: target=_blank opens a new tab; rel="me" declares these as
-      Trevor's own profiles (identity); noopener/noreferrer are security hygiene
-      for any new-tab external link.
-    -->
+    <!-- rel="me" = these are my profiles; noopener/noreferrer is standard
+         hygiene for target=_blank links. -->
     <nav class="flex gap-4" aria-label="Social links">
       {
         socials.map((s) => (

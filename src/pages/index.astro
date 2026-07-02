@@ -1,28 +1,14 @@
 ---
 /**
- * Home page (/) — the site's front door, built to the terminal mockup in
- * buildspec.md / todo.md §9.
+ * Home page (/) — the site's front door, styled as a terminal session.
  *
  * Layout (top to bottom): prompt + `whoami`, name, divider rule, role line,
- * tagline with a blinking cursor, quote, location, and the keyboard-shortcut
- * row that doubles as the primary navigation.
- *
- * The keybind row is hardcoded here for now; the Nav-rework step will extract a
- * shared component and wire the actual keydown handlers.
+ * tagline with a blinking cursor, and the keyboard-shortcut row that doubles
+ * as the primary navigation.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Prompt from '../components/Prompt.astro';
-import Cursor from '../components/Cursor.astro';
 
-// The chosen tagline (see todo.md §7 "Decisions").
-const tagline =
-  'Combat rescue flight engineer turned network builder, currently rebuilding his digital life from the ground up.';
-
-// The keyboard-shortcut hints. Single source so the letters/labels stay in sync
-// when the Nav rework reuses them. (Routes are wired up in a later step.)
-// Page-level nav links. colophon/help live in the AppWindow footer bar instead,
-// so they're intentionally omitted here. `href` is the clickable target — only
-// the word itself is wrapped in the link (not the `[key]` or `~/` prefix).
+// Home nav. colophon/help live in the AppWindow footer bar, so not repeated here.
 const keys = [
   { key: 'a', label: 'about', href: '/about' },
   { key: 'b', label: 'blog', href: '/blog' },
@@ -31,10 +17,12 @@ const keys = [
 ---
 
 <BaseLayout title="Trevor Stevens — Home" windowed>
-  <!-- Prompt line: stanferd@csar:~$ whoami -->
-  <Prompt command="whoami" />
+  <!-- Prompt line: stanferd@csar:~$ whoami (`csar` = combat search-and-rescue) -->
+  <span class="font-mono text-sm">
+    <span class="text-accent">stanferd@csar:~$</span>
+    <span class="text-text"> whoami</span>
+  </span>
 
-  <!-- Name -->
   <h1 class="font-heading text-4xl font-bold mt-6 mb-2">Trevor Stevens</h1>
 
   <!-- Divider rule (drawn with box characters for the terminal feel) -->
@@ -42,21 +30,14 @@ const keys = [
     ────────────────────────
   </div>
 
-  <!--
-    Role line + tagline rendered as ONE block of text: same font (Space Grotesk)
-    and size, a <br /> instead of a paragraph gap, no `>` prefix. The blinking
-    cursor trails the whole block.
-  -->
+  <!-- Role line + tagline as one block, <br /> not a paragraph gap; cursor trails it. -->
   <p class="font-heading mt-2 leading-relaxed">
     Combat Rescue. Network Engineer. DevOps.<br />
-    {tagline}<Cursor />
+    Combat rescue flight engineer turned network builder, currently rebuilding
+    his digital life from the ground up.<span class="cursor" aria-hidden="true"></span>
   </p>
 
-  <!--
-    Primary nav, stacked vertically. Each line reads `[key] ~/word`; the [key]
-    and `~/` are plain text and only the word is the link. The matching keyboard
-    shortcut (wired globally in BaseLayout) still works too.
-  -->
+  <!-- Only the word is the link; the [key] shortcuts themselves are wired in BaseLayout. -->
   <nav class="font-mono text-sm text-muted mt-8 flex flex-col gap-2" aria-label="Primary navigation">
     {
       keys.map((k) => (

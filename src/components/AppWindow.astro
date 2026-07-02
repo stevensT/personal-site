@@ -1,40 +1,22 @@
 ---
 /**
- * AppWindow — a macOS-style "app window" shell wrapped around page content.
+ * AppWindow — the macOS-style "app window" shell around the home page:
+ * title bar (traffic lights, domain, theme toggle), body via <slot />,
+ * and a footer bar (copyright/location left, colophon/help keybinds right).
  *
- * Renders three parts:
- *   1. Title bar  — traffic-light dots, the centered domain title, a theme-
- *                   toggle icon (wired up in the keyboard-nav step).
- *   2. Body       — the page's content, injected via <slot />.
- *   3. Footer bar — location on the left, colophon/help keybinds on the right.
- *
- * Used by BaseLayout so every page sits inside the same window chrome.
- *
- * Props:
- *   - windowTitle?: string — text centered in the title bar (default the domain).
- *   - location?:    string — place shown in the footer bar (default "Arizona").
+ * No props.
  */
-interface Props {
-  windowTitle?: string;
-  location?: string;
-}
-
-const { windowTitle = 'stanferd.dev', location = 'Tucson, AZ' } = Astro.props;
-
-// Build-time copyright year for the footer bar.
+// Baked in at build time; refreshes on each deploy.
 const year = new Date().getFullYear();
 
-// Keybind hints shown in the footer bar (the global ones, vs. the page-level
-// nav keys on the home body). Letters in accent green via the template below.
-// `href` makes the label a link (like the home-body nav). `help` has no route —
-// it toggles the overlay via the [h] key — so it stays plain text.
+// Footer-bar keybinds. `help` has no href — [h] toggles the overlay — so it
+// stays plain text.
 const footerKeys = [
   { key: 'x', label: 'colophon', href: '/colophon' },
   { key: 'h', label: 'help' },
 ];
 
-// External profile links shown inside the window. Label-only (no @username) —
-// the handle lives in the href. rel="me" marks these as Trevor's own profiles.
+// Label-only; the handle lives in the href. rel="me" = these are my profiles.
 const socials = [
   { label: 'github', href: 'https://github.com/stevensT' },
   { label: 'instagram', href: 'https://instagram.com/stevenstrevor' },
@@ -57,13 +39,10 @@ const socials = [
 
     <!-- Centered window title (the domain) -->
     <span class="flex-1 text-center font-mono text-sm text-muted">
-      {windowTitle}
+      stanferd.dev
     </span>
 
-    <!--
-      Theme toggle. Non-functional for now — the keyboard-nav step wires it to
-      [d] and persists the choice. id is the hook for that script.
-    -->
+    <!-- Theme toggle — mirrors [d]. BaseLayout's script hooks this id. -->
     <button
       id="theme-toggle"
       type="button"
@@ -94,7 +73,6 @@ const socials = [
   <div class="px-6 py-8 sm:px-8">
     <slot />
 
-    <!-- Social profile links (global). Label-only; href carries the handle. -->
     <nav class="mt-8 flex gap-6 font-mono text-sm text-muted" aria-label="Social links">
       {
         socials.map((s) => (
@@ -117,7 +95,7 @@ const socials = [
   >
     <span class="flex flex-wrap gap-x-4 gap-y-1">
       <span>© {year} Trevor Stevens</span>
-      <span>📍 {location} 🌵</span>
+      <span>📍 Tucson, AZ 🌵</span>
     </span>
     <span class="flex flex-wrap gap-x-4 gap-y-1">
       {

@@ -1,11 +1,8 @@
 ---
 /**
- * Single blog post route (/blog/<slug>).
- *
- * ONE file generates a page for EVERY post. getStaticPaths() runs at build time,
- * enumerates the collection, and emits a static page per entry — the file name
- * (post.id) is the slug. render(post) compiles the Markdown into a <Content />
- * component we drop into BlogLayout.
+ * Single post route (/blog/<slug>). getStaticPaths() emits one static page
+ * per collection entry at build time; the Markdown filename (post.id) is the
+ * slug.
  */
 import { getCollection, render } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';

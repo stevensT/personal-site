@@ -1,16 +1,12 @@
 ---
 /**
- * Career page (/career) — a concise, factual bullet list (no flowery prose),
- * per buildspec.md. Grouped into Military, Tech / Networking, and Education.
- *
- * Some items are PLACEHOLDERS for Trevor to confirm/fill in (marked "TODO" in
- * the data below and shown muted on the page) — exact dates, rank, and any
- * formal network-engineering roles weren't available when this was scaffolded.
+ * Career page (/career) — a plain bullet list grouped into Education,
+ * Military, and Tech / Networking.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Each section is a heading + a list of bullet strings. Items wrapped in a
-// `todo` flag render muted, as a visible reminder of what's left to confirm.
+// Items with `todo: true` render muted — visible reminders of details still
+// to fill in (dates, rank, formal roles).
 const sections = [
   {
     heading: 'Education',

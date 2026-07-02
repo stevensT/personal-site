@@ -1,14 +1,11 @@
 ---
 /**
- * BlogLayout — the shell for a single blog post.
- *
- * Wraps BaseLayout (so a post gets the same site chrome as other inner pages),
- * adds the post header (title, date, tags), and renders the post body in a
- * `.post-body` wrapper that global.css styles like an article.
+ * BlogLayout — shell for a single post: BaseLayout chrome + post header
+ * (title, date, tags) + the Markdown body in a `.post-body` wrapper that
+ * global.css styles like an article.
  *
  * Props:
- *   - post: the blog collection entry being rendered. Its Markdown body is
- *           passed in via <slot /> by the route that uses this layout.
+ *   - post: the blog collection entry; its rendered body comes in via <slot />
  */
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
@@ -20,8 +17,8 @@ interface Props {
 const { post } = Astro.props;
 const { title, description, date, tags } = post.data;
 
-// timeZone: 'UTC' so the displayed date matches the frontmatter (a bare YAML
-// date is UTC midnight; a local zone west of UTC would show the day before).
+// timeZone: 'UTC' or the date shows a day early — a bare YAML date parses as
+// UTC midnight, and we're west of UTC.
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
@@ -38,7 +35,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
       {tags.length > 0 && <span> · {tags.join(', ')}</span>}
     </p>
 
-    <!-- The rendered Markdown lands here; .post-body styles its elements. -->
+    <!-- Rendered Markdown lands here; .post-body (global.css) styles it. -->
     <div class="post-body mt-8 text-lg text-text">
       <slot />
     </div>

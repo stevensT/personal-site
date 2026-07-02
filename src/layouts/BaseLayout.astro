@@ -1,22 +1,15 @@
 ---
 /**
- * BaseLayout — the shared shell wrapped around every page.
+ * BaseLayout — the shared shell around every page: <head>, site chrome, and
+ * the keyboard-nav / theme-toggle / help-overlay scripts at the bottom.
  *
- * Supplies the <head> (charset, viewport, favicon, SEO title/description) and
- * the persistent site chrome (the AppWindow shell), so each page only provides
- * its own unique body content via <slot />. Also wires the site-wide keyboard
- * navigation, theme toggle, and help overlay (scripts at the bottom).
- *
- * WHY global.css is imported here: this single import is what makes Tailwind's
- * utility classes available on every page. Importing it once in the layout
- * (rather than per-page) means Tailwind is wired site-wide from one place.
+ * global.css is imported here (and only here) so Tailwind applies site-wide.
  *
  * Props:
- *   - title:        string  — text for the browser tab / <title> (required)
- *   - description?: string  — meta description for SEO (optional; has a default)
- *   - windowed?:    boolean — true only for the Home page: wraps content in the
- *                             AppWindow chrome. All other pages render a plain
- *                             centered single-column layout. (default: false)
+ *   - title:        browser tab / <title>
+ *   - description?: meta description (has a default)
+ *   - windowed?:    home only — wraps content in the AppWindow chrome instead
+ *                   of the plain Nav/Footer column (default false)
  */
 import '../styles/global.css';
 import AppWindow from '../components/AppWindow.astro';
@@ -29,16 +22,14 @@ interface Props {
   windowed?: boolean;
 }
 
-// Fallback description used when a page does not pass its own.
 const {
   title,
   description = 'Personal site of Trevor Stevens — learning to code, AI/LLMs, and DevOps in public.',
   windowed = false,
 } = Astro.props;
 
-// Absolute canonical URL for this page. `Astro.site` is the domain set in
-// astro.config.mjs; `Astro.url.pathname` is the current path. Social platforms
-// and search engines want absolute URLs, so we resolve against the site origin.
+// Absolute canonical URL — crawlers and social embeds want absolute, not relative.
+// Astro.site comes from astro.config.mjs.
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -58,25 +49,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="theme-color" content="#0d1117" />
 
     <!--
-      Open Graph + Twitter Card tags. These control how a link to the site looks
-      when shared (Slack, iMessage, Twitter/X, etc.). They reuse the page's own
-      title/description. og:image is intentionally omitted until a social preview
-      image exists — see tasks/todo.md.
+      Open Graph — how links look when shared (Slack, iMessage, X, etc.).
+      og:image omitted until a social-preview image exists.
     -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Trevor Stevens" />
+    <!-- twitter:title/description omitted — X falls back to the og: tags above. -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
 
     <!--
-      Google Fonts for the terminal type system (chosen "Option B"):
-        Space Grotesk — headings   Newsreader — body   Space Mono — prompt/code
-      preconnect warms the connection so text doesn't flash; display=swap shows
-      a fallback immediately and swaps the web font in when it arrives.
+      Space Grotesk — headings · Newsreader — body · Space Mono — prompt/code.
+      preconnect warms the connection; display=swap shows a fallback immediately
+      and swaps the web font in when it arrives.
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -86,9 +73,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     />
 
     <!--
-      Anti-flash theme script. is:inline = Astro leaves it untouched and it runs
-      immediately (before the body paints), so a light-mode visitor never sees a
-      dark flash first. Dark is the default, so we only act when 'light' is saved.
+      Anti-flash theme script. is:inline so it runs before the body paints —
+      a light-mode visitor never sees a dark flash. Dark is the default, so
+      only act when 'light' is saved.
     -->
     <script is:inline>
       if (localStorage.getItem("theme") === "light") {
@@ -96,11 +83,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       }
     </script>
   </head>
-  <!--
-    The page is the dark "desktop" (bg-page). Home (windowed) sits inside a
-    centered AppWindow; every other page renders a plain centered column.
-    bg-page/text-text/font-body come from the @theme tokens.
-  -->
+  <!-- The body is the dark "desktop"; home floats an AppWindow on it, the rest
+       get a plain centered column. -->
   <body class="min-h-screen bg-page text-text font-body">
     {
       windowed ? (
@@ -120,10 +104,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       )
     }
 
-    <!--
-      Help overlay. Hidden until [h] is pressed. The `hidden` attribute keeps it
-      out of the layout and the accessibility tree until shown.
-    -->
+    <!-- Help overlay, shown/hidden by [h]. `hidden` keeps it out of the layout
+         and the accessibility tree until then. -->
     <div
       id="help-overlay"
       hidden
@@ -145,11 +127,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       </div>
     </div>
 
-    <!--
-      Site-wide interactivity. This is a normal Astro <script>: it's bundled and
-      runs after the DOM is ready, once per page load. Since navigation is a full
-      page load, re-binding each load is correct and simple.
-    -->
+    <!-- Site-wide keyboard nav + theme toggle. Runs once per page load; since
+         every navigation is a full page load, re-binding each time is fine. -->
     <script>
       // key -> path. d/h/esc are handled specially below.
       const ROUTES: Record<string, string> = {
@@ -162,17 +141,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       const html = document.documentElement;
       const helpOverlay = document.getElementById("help-overlay");
 
-      /** Apply a theme by toggling the data-attribute the CSS keys off of. */
-      function applyTheme(theme: string): void {
-        if (theme === "light") html.dataset.theme = "light";
-        else delete html.dataset.theme;
-      }
-
-      /** Flip dark <-> light and remember the choice. */
+      /**
+       * Flip dark <-> light and remember the choice. The CSS keys off the
+       * data-theme attribute: present = light, absent = dark (the default).
+       */
       function toggleTheme(): void {
         const next = html.dataset.theme === "light" ? "dark" : "light";
         localStorage.setItem("theme", next);
-        applyTheme(next);
+        if (next === "light") html.dataset.theme = "light";
+        else delete html.dataset.theme;
       }
 
       /** Show/hide the keyboard-shortcut overlay. */

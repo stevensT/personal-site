@@ -68,8 +68,9 @@ JS is a small vanilla script in `BaseLayout` (keyboard nav + theme toggle).
   plain inner pages. `blog/[...slug].astro` renders one post per Markdown file.
 - `src/layouts/` — `BaseLayout` (shared `<head>`, chrome, keyboard/theme scripts;
   imports `global.css`) and `BlogLayout` (wraps a single post).
-- `src/components/` — reusable UI: `Nav`, `Footer`, `AppWindow`, `Prompt`,
-  `Cursor`, `PostCard`, `WorldMap`.
+- `src/components/` — reusable UI: `Nav`, `Footer`, `AppWindow`, `PostCard`,
+  `WorldMap`. (The prompt line and blinking cursor are inlined in
+  `index.astro` / `global.css` — they only ever had one caller.)
 - `src/content/blog/` + `src/content.config.ts` — the `blog` content collection.
   Add a post = drop a `.md` file (frontmatter: title, date, description, tags?).
 - `src/styles/global.css` — Tailwind entry, design tokens via `@theme` (colors,

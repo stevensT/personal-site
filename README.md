@@ -1,8 +1,8 @@
 # Portfolio at [stanferd.dev](https://stanferd.dev)
 
-The personal site and portfolio of **Trevor Stevens**, a technologist, network builder, currently rebuilding his digital life from the ground up.
+My personal site and portfolio. I'm Trevor Stevens, a technologist and network builder rebuilding my digital life from the ground up.
 
-This project serves as a live demonstration of my technical skills, a source for the technical ramblings that go on in my head, and a direct line to get in touch with me.
+This project is a working demo of what I can build, a home for the technical ramblings in my head, and a way to learn a bit about me.
 
 ## The Stack
 

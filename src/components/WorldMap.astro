@@ -1,16 +1,13 @@
 ---
 /**
- * WorldMap — a dot-matrix world map showing where Trevor has lived and visited.
+ * WorldMap — dot-matrix map of where I've lived and visited.
  *
- * The land is a grid of dots generated at author-time (see
- * scripts/gen-world-dots.mjs -> src/data/world-dots.json), so there's no map
- * library or runtime dependency. Location markers are overlaid by projecting
- * lat/lon with the SAME equirectangular maths the generator used.
+ * The land dots are pre-generated (scripts/gen-world-dots.mjs ->
+ * src/data/world-dots.json), so no map library. Markers are projected with
+ * the SAME equirectangular maths the generator used — keep them in sync.
  *
- * To edit the map, change the `locations` array below (lat/lon in degrees,
- * type 'lived' or 'visited'). Hover a marker to see its name.
- *
- * No props.
+ * To edit the map, change `locations` below (lat/lon in degrees, type
+ * 'lived' | 'visited'). Hover a marker for its name. No props.
  */
 import worldDots from '../data/world-dots.json';
 
@@ -21,8 +18,7 @@ type Location = {
   type: 'lived' | 'visited';
 };
 
-// Locations to plot. Coordinates are approximate city/country centers — fine
-// for a map at this scale. Edit freely; add { name, lat, lon, type }.
+// Approximate city/country centers — fine at this scale.
 const locations: Location[] = [
   // --- Lived ---
   { name: 'Turlock, CA (hometown)', lat: 37.49, lon: -120.85, type: 'lived' },
@@ -111,7 +107,7 @@ const markers = locations.map((loc) => ({ ...loc, ...project(loc.lat, loc.lon) }
     viewBox={`0 0 ${width} ${height}`}
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="World map showing places Trevor has lived and visited"
+    aria-label="World map of places I've lived and visited"
     class="world-map"
   >
     <!-- Land: the generated dot grid. -->

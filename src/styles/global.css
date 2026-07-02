@@ -1,16 +1,13 @@
 @import "tailwindcss";
 
 /*
- * Design tokens — the single source of truth for the site's terminal look.
+ * Design tokens — single source of truth for the terminal look.
  *
- * WHY @theme (Tailwind v4): values defined here are turned into real utility
- * classes at build time. Declaring `--color-accent` below means you can write
- * `text-accent`, `bg-accent`, `border-accent`, etc. anywhere — no separate
- * config file. Change a value here and it updates across the whole site.
+ * Tailwind v4 @theme: each token becomes real utilities at build time
+ * (--color-accent -> text-accent, bg-accent, ...). No config file; change a
+ * value here and it updates site-wide.
  *
- * Colors come from buildspec.md / todo.md §9 (GitHub-dark terminal palette).
- * Fonts are the chosen "Option B" set; the actual font files are loaded via
- * <link> tags in BaseLayout's <head>.
+ * Colors are the GitHub-dark palette. Fonts load via <link> in BaseLayout.
  */
 @theme {
   /* Color palette */
@@ -22,18 +19,16 @@
   --color-muted: #8b949e;   /* secondary text, keybind hints */
   --color-line: #21262d;    /* subtle borders / dividers */
 
-  /* Type system (Option B) */
+  /* Type system */
   --font-heading: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Newsreader", Georgia, serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
 }
 
 /*
- * Light theme — set by the [d] toggle (and the title-bar sun icon), persisted in
- * localStorage. It works by OVERRIDING the color tokens above when
- * <html data-theme="light"> is present. Because every `bg-bg` / `text-text`
- * utility resolves to var(--color-*), changing these variables reskins the whole
- * site without touching any markup. Dark (the :root values) stays the default.
+ * Light theme — [d] toggle, persisted in localStorage. Just overrides the
+ * tokens when <html data-theme="light"> is set; every utility resolves to
+ * var(--color-*), so no markup changes. Dark stays the default.
  */
 html[data-theme="light"] {
   --color-page: #e9ecef;     /* light desktop behind the window */
@@ -46,21 +41,35 @@ html[data-theme="light"] {
 }
 
 /*
- * The signature blinking cursor animation. Defined globally so any element can
- * reuse it (the Cursor component, the home tagline, etc.). steps(1) makes it a
- * hard on/off blink rather than a smooth fade — more "real terminal".
+ * The signature blinking block cursor (used on the home tagline). steps(1)
+ * makes it a hard on/off blink rather than a smooth fade — more "real
+ * terminal". Sized in ch/em so it scales with the surrounding font size.
  */
 @keyframes blink {
   50% {
     opacity: 0;
   }
 }
+.cursor {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1.05em;
+  margin-left: 0.15ch;
+  background: var(--color-accent);
+  vertical-align: text-bottom;
+  animation: blink 1s steps(1) infinite;
+}
+/* Respect users who prefer no motion: show a steady cursor instead. */
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+  }
+}
 
 /*
- * Article body styles for rendered Markdown (blog posts). We style elements
- * directly here rather than add the Tailwind typography plugin, since rendered
- * Markdown HTML can't carry utility classes. Colors use the @theme tokens, so
- * this respects the light/dark theme automatically.
+ * Blog post body styles. Rendered Markdown can't carry utility classes, so
+ * elements are styled directly here (instead of the typography plugin).
+ * Colors use the tokens, so light/dark just works.
  */
 .post-body > * + * {
   margin-top: 1rem; /* vertical rhythm between blocks */

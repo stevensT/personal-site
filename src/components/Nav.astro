@@ -1,18 +1,11 @@
 ---
 /**
- * Nav — primary site navigation, rendered at the top of the non-home pages by
- * BaseLayout. (Home uses the AppWindow's keyboard-hint nav instead.)
- *
- * Some targets (Career, Blog, Colophon) 404 until those pages are built —
- * expected during construction. There is no Contact page by design; contact
- * lives in the Footer.
- *
- * No props.
+ * Nav — top nav for the non-home pages (home uses the AppWindow keybind nav).
+ * No Contact page on purpose; contact lives in the Footer. No props.
  */
 
-// Single source of truth for the nav links. Adding a page later = adding one
-// entry here. Home is reached via the prompt link on the left, and Colophon is
-// intentionally home-only, so neither appears in this list.
+// Home is the prompt link on the left, and colophon is deliberately home-only
+// ([x] / footer bar), so neither appears here.
 const links = [
   { href: '/about', label: 'About' },
   { href: '/career', label: 'Career' },
@@ -22,7 +15,7 @@ const links = [
 
 <header>
   <nav class="max-w-[700px] mx-auto px-4 py-4 flex items-center justify-between">
-    <!-- Terminal-style link back home (replaces a plain name/brand). -->
+    <!-- Terminal-style link back home, instead of a plain name/brand. -->
     <a
       href="/"
       class="font-mono text-sm text-muted transition-colors hover:text-accent"
