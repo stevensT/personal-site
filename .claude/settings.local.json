@@ -66,7 +66,9 @@
       "Skill(humanizer)",
       "Skill(humanizer:*)",
       "Bash(git -C /Users/trevor/Documents/01_dev/personal-site ls-files)",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(command -v figlet toilet)",
+      "Bash(figlet -f standard \"MOUNT UP\")"
     ]
   }
 }

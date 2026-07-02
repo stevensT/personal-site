@@ -107,3 +107,5 @@ loaded from Google Fonts. `[d]` toggles light/dark (persisted); `[a]/[b]/[c]/
 ## Documentation
 - Every new component needs a comment block explaining its purpose and props
 - If a decision was non-obvious, leave a comment explaining why we did it this way
+- `public/humans.txt` has a hand-maintained `Last update:` date (YYYY/MM/DD).
+  Bump it whenever you ship a meaningful site change — it does not auto-update.

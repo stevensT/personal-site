@@ -1,0 +1,20 @@
+/* TEAM */
+
+  Everything: Trevor Stevens.
+  Site: https://stanferd.dev
+  GitHub: github.com/stevensT
+  Location: Tucson, AZ, USA.
+
+/* THANKS */
+
+  Alex Howells (alexhowells.com) — the look and structure started here.
+  Google Fonts — Space Grotesk, Newsreader, Space Mono.
+
+/* SITE */
+
+  Last update: 2026/07/01
+  Standards: HTML5, CSS
+  Components: Astro 6, Tailwind CSS v4
+  Software: TypeScript (strict), VS Code, Cloudflare Pages, Claude Code
+
+  $ you read the humans. nice.

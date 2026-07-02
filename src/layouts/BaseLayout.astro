@@ -10,22 +10,35 @@
  *   - description?: meta description (has a default)
  *   - windowed?:    home only — wraps content in the AppWindow chrome instead
  *                   of the plain Nav/Footer column (default false)
+ *   - banner?:      ASCII art dropped into an HTML comment at the top of
+ *                   <head> — an easter egg for anyone who reads view-source.
+ *                   Per-page override; falls back to DEFAULT_BANNER.
  */
 import '../styles/global.css';
 import AppWindow from '../components/AppWindow.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
+// Injected raw (set:html) into an HTML comment, so any banner MUST NOT contain
+// `-->` or a stray `--` — it would break out of the comment. All callers pass
+// author-controlled literals, so this is a convention, not a runtime guard.
+const DEFAULT_BANNER = `
+  ┌─[ stanferd.dev ]
+  └─$ you found the source. poke around.
+`;
+
 interface Props {
   title: string;
   description?: string;
   windowed?: boolean;
+  banner?: string;
 }
 
 const {
   title,
   description = 'Personal site of Trevor Stevens — learning to code, AI/LLMs, and DevOps in public.',
   windowed = false,
+  banner = DEFAULT_BANNER,
 } = Astro.props;
 
 // Absolute canonical URL — crawlers and social embeds want absolute, not relative.
@@ -36,6 +49,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- view-source easter egg; set:html keeps the comment raw (see DEFAULT_BANNER). -->
+    <Fragment set:html={`<!--${banner}-->`} />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -43,6 +58,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <!-- humanstxt.org convention: points at the /humans.txt easter egg. -->
+    <link rel="author" type="text/plain" href="/humans.txt" />
     <title>{title}</title>
 
     <!-- Browser UI color on mobile (address bar). Matches the dark page bg. -->
@@ -81,6 +98,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       if (localStorage.getItem("theme") === "light") {
         document.documentElement.dataset.theme = "light";
       }
+    </script>
+
+    <!-- DevTools easter egg. is:inline so it ships verbatim, styled like the prompt. -->
+    <script is:inline>
+      console.log(
+        "%c$ whoami\n> you found the console. hi.",
+        'color:#1cb03a;font:14px "Space Mono",monospace',
+      );
     </script>
   </head>
   <!-- The body is the dark "desktop"; home floats an AppWindow on it, the rest

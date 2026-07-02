@@ -31,6 +31,27 @@
 - **Machine-move gotcha:** never file-copy `node_modules` between computers;
   `rm -rf node_modules && npm install` if the build fails with "Permission denied".
 
+## HTML easter eggs — DONE (2026-07-01, uncommitted)
+
+Fun/on-brand eggs in the page source. No new deps, no bytes shipped to normal
+visitors beyond a tiny inline console.log. Built + verified in `dist/`.
+
+- Top-of-`<head>` HTML comment banner (`banner` prop; default site-wide, Career
+  overrides with "MOUNT UP" from `src/data/mount-up.txt` via `?raw`).
+- Inline `console.log` DevTools egg.
+- `public/humans.txt` (humanstxt.org) + `<link rel="author">` pointer in head.
+
+- **BaseLayout.astro** — add optional `banner?: string` prop, default:
+  `┌─[ stanferd.dev ]` / `└─$ you found the source. poke around.` Emit it as the
+  first child of `<head>` via `<Fragment set:html={`<!--${banner}-->`} />`
+  (raw-inject; a literal `<!-- {expr} -->` won't evaluate in Astro). Add a
+  one-line `is:inline` console.log egg (green Space Mono `%c` styling).
+- **career.astro** — define a `banner` const with "MOUNT UP" ASCII art (art must
+  contain NO `--`, or it breaks the comment) and pass `banner={banner}` to
+  override the default on this page only.
+- Constraint = convention: all `banner` values are author-controlled static
+  literals, so "no `--` in art" is a comment note, not a runtime guard. No test.
+
 ## Open items (content only)
 
 - [ ] Career page: 2 muted TODO placeholders need Trevor's real details
