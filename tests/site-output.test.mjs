@@ -7,7 +7,8 @@ import test from 'node:test';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const out = join(root, 'dist');
 assert.ok(existsSync(out), 'Run npm run build to generate the pages before output checks.');
-const pages = readdirSync(out, { recursive: true }).filter(name => name.endsWith('.html'));
+const pages = readdirSync(out, { recursive: true }).filter(name => name.endsWith('.html'))
+  .map(name => name.replaceAll('\\', '/'));
 
 /** Verify existing URLs and common accessible controls survive future builds. */
 test('all existing routes have one main heading and accessible Help controls', () => {
@@ -88,4 +89,64 @@ test('ordinary text, muted text, and links meet 4.5:1 in both themes', () => {
       }
     }
   }
+});
+
+/** Normalize heading markup and the extra quote escaping used by Astro text nodes.
+ * @param markup Rendered heading or link label.
+ */
+function headingText(markup) {
+  return markup.replace(/<[^>]*>/g, '').replace(/&#39;/g, "'").replace(/&quot;/g, '"');
+}
+
+/** Compare navigation against actual rendered sections, including duplicate heading slugs. */
+test('post contents link to h2/h3 sections in order and omit empty lists', () => {
+  const postPages = pages.filter(name => /^blog\/[^/]+\/index\.html$/.test(name));
+  assert.ok(postPages.length > 0, 'Expected generated blog posts');
+  for (const page of postPages) {
+    const html = readFileSync(join(out, page), 'utf8');
+    const article = html.match(/<article\b[^>]*class="blog-article"[^>]*>([\s\S]*?)<\/article>/)?.[1];
+    assert.ok(article, page);
+    const headings = [...article.matchAll(/<h([23])\b[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/h[23]>/g)];
+    const nav = html.match(/<nav\b[^>]*aria-label="Table of contents"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+    if (headings.length === 0) {
+      assert.equal(nav, undefined, page);
+      assert.ok(!html.includes('post-contents'), page);
+      continue;
+    }
+    assert.ok(nav, page);
+    const links = [...nav.matchAll(/<li\b([^>]*)>\s*<a\b[^>]*href="#([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)];
+    assert.equal(links.length, headings.length, page);
+    assert.equal(new Set(headings.map(([, , id]) => id)).size, headings.length, page);
+    headings.forEach(([, depth, id, label], index) => {
+      const [, attributes, target, text] = links[index];
+      assert.equal(target, id, page);
+      assert.ok(html.includes(`data-post-heading="${id}"`), page);
+      assert.equal(headingText(text), headingText(label), page);
+      assert.equal(attributes.includes('pl-4'), depth === '3', page);
+    });
+    assert.match(html, /<details\b[^>]*class="post-contents[^"]*"[^>]*\bopen\b/, page);
+  }
+});
+
+/** Check authored tags and reserve the wider shell for posts and the blog index. */
+test('posts show individual tags; posts and blog index share wide navigation, content, and footer', () => {
+  const expectedTags = {
+    'hello-world': ['meta', 'learning-in-public'],
+    'it-wasnt-dns': ['netbird', 'dns', 'homelab', 'networking', 'split-dns', 'macos'],
+    'second-brain-that-stuck': ['second-brain', 'homelab', 'obsidian', 'ai-agents', 'claude'],
+  };
+  let checkedTags = 0;
+  for (const page of pages) {
+    const html = readFileSync(join(out, page), 'utf8');
+    const isWide = html.includes('class="blog-article"') || page === 'blog/index.html';
+    assert.equal((html.match(/max-w-\[1200px\]/g) ?? []).length, isWide ? 3 : 0, page);
+    const slug = page.match(/^blog\/([^/]+)\/index\.html$/)?.[1];
+    if (!expectedTags[slug]) continue;
+    const tags = html.match(/<ul\b[^>]*class="post-tags[^"]*"[^>]*>([\s\S]*?)<\/ul>/)?.[1];
+    assert.ok(tags, page);
+    checkedTags += 1;
+    assert.deepEqual([...tags.matchAll(/<a\b[^>]*>([^<]*)<\/a>/g)].map(([, text]) => text),
+      expectedTags[slug], page);
+  }
+  assert.equal(checkedTags, Object.keys(expectedTags).length);
 });

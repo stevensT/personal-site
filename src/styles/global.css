@@ -126,3 +126,42 @@ html[data-theme="light"] {
   overflow-x: auto;
   border: 1px solid var(--color-line);
 }
+
+/* Keep a single reading column until there is room for a useful sidebar. */
+.blog-layout {
+  display: grid;
+  gap: 2rem;
+}
+.blog-article,
+.blog-sidebar {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.post-body :is(h2, h3) {
+  scroll-margin-top: 2rem;
+}
+/* Preserve code formatting; wide lines scroll within the code block. */
+.post-body pre {
+  overflow-wrap: normal;
+}
+@media (min-width: 1024px) {
+  .blog-layout {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    column-gap: 3rem;
+    align-items: start;
+  }
+  .blog-article {
+    grid-column: 1;
+    grid-row: 1;
+    max-width: 850px;
+  }
+  .blog-sidebar {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100dvh - 4rem);
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+}

@@ -70,14 +70,21 @@ shared theme, shortcut preference, and native Help dialog controls.
 - `src/pages/` — file-based routing; each file is a route. Home (`index.astro`)
   is the terminal "app window"; `about`, `career`, `colophon`, and `blog/` are
   plain inner pages. `blog/[...slug].astro` renders one post per Markdown file.
+  `tags/[tag].astro` builds tag archives; the blog index lists every tag.
 - `src/layouts/` — `BaseLayout` (shared `<head>`, chrome, Help and control wiring;
-  imports `global.css`) and `BlogLayout` (wraps a single post).
+  imports `global.css`; `wide` aligns the blog chrome at 1200px) and
+  `BlogLayout` (article with a right Tags/Contents sidebar).
 - `src/components/` — reusable UI: `Nav`, `Footer`, `AppWindow`, `PostCard`,
   `WorldMap`, `ShortcutHelp` (native dialog; no props). The prompt and cursor live in
   `index.astro` / `global.css` — they only ever had one caller.
 - `src/scripts/site-controls.ts` — shared browser behavior, tested with storage
   and DOM fixtures; real focus/layout are verified in a browser.
-- `tests/` — Node checks for controls, contrast, generated links, dates, and markup.
+- `src/scripts/post-contents.ts` — tracks the current h2/h3 section and its rail
+  highlight without rewriting fragments or moving keyboard focus.
+- `src/utils/tags.ts` — shared tag path encoder; preserves distinct labels and
+  avoids inconsistent reserved percent-escape decoding in Astro static routes.
+- `tests/` — Node checks for controls, section tracking, tag membership, contrast,
+  generated links, dates, and markup.
 - `src/content/blog/` + `src/content.config.ts` — the `blog` content collection.
   Add a post = drop a `.md` file (frontmatter: title, date, description, tags?).
 - `src/styles/global.css` — Tailwind entry, design tokens via `@theme` (colors,

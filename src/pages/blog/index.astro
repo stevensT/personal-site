@@ -1,17 +1,21 @@
 ---
 /**
- * Blog index (/blog) — every post as a PostCard, newest first.
+ * Blog index (/blog) — all tags and every post as a PostCard, newest first.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import { tagSlug } from '../../utils/tags';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))]
+  .sort((a, b) => a.localeCompare(b, 'en'));
 ---
 
 <BaseLayout
+  wide
   title="Blog — Trevor Stevens"
   description="Notes and home-lab write-ups from Trevor Stevens — learning in public."
 >
@@ -20,15 +24,27 @@ const posts = (await getCollection('blog')).sort(
     Notes and home-lab write-ups — learning in public.
   </p>
 
-  {
-    posts.length > 0 ? (
-      <div class="mt-8 flex flex-col gap-4">
-        {posts.map((post) => (
-          <PostCard post={post} />
-        ))}
-      </div>
-    ) : (
-      <p class="mt-8 text-muted">No posts yet — check back soon.</p>
-    )
-  }
+  <div class:list={["mt-8 grid items-start gap-8", { "lg:grid-cols-[minmax(0,1fr)_240px]": tags.length > 0 }]}>
+    {tags.length > 0 && (
+      <nav class="min-w-0 border-l border-line pl-4 lg:col-start-2 lg:row-start-1" aria-labelledby="all-tags-title">
+        <h2 id="all-tags-title" class="font-mono text-xs font-bold text-text">All tags</h2>
+        <ul class="all-tags mt-3 flex flex-wrap gap-2 font-mono text-xs" role="list">
+          {tags.map((tag) => (
+            <li class="min-w-0 max-w-full">
+              <a href={`/tags/${tagSlug(tag)}/`} class="block rounded border border-line bg-bg px-2 py-1 text-muted [overflow-wrap:anywhere] hover:border-accent hover:text-accent focus-visible:text-accent">{tag}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+    <div class="min-w-0 lg:col-start-1 lg:row-start-1">
+      {posts.length > 0 ? (
+        <div class="grid gap-4">
+          {posts.map((post) => <PostCard post={post} />)}
+        </div>
+      ) : (
+        <p class="text-muted">No posts yet — check back soon.</p>
+      )}
+    </div>
+  </div>
 </BaseLayout>

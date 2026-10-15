@@ -12,7 +12,7 @@
     "astro": "astro",
     "gen:worldmap": "node scripts/gen-world-dots.mjs",
     "check": "astro check",
-    "test": "node --test tests/site-controls.test.mjs tests/site-output.test.mjs"
+    "test": "node --test tests/site-controls.test.mjs tests/site-output.test.mjs tests/post-contents.test.mjs tests/blog-tags.test.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "4.3.3",

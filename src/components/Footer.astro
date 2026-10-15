@@ -1,8 +1,15 @@
 ---
 /**
  * Footer — for the non-home pages (home uses the AppWindow footer bar).
- * Copyright, location, and social links. No props.
+ * Copyright, location, and social links.
+ * Props: wide? — align with the wider blog page layout (default false).
  */
+
+interface Props {
+  wide?: boolean;
+}
+
+const { wide = false } = Astro.props;
 
 // Baked in at build time; refreshes on each deploy.
 const year = new Date().getFullYear();
@@ -17,7 +24,7 @@ const socials = [
 <footer>
   <!-- Border on the inner container so the divider is content-width, not full page. -->
   <div
-    class="max-w-[700px] mx-auto px-4 py-6 flex flex-wrap justify-between gap-x-4 gap-y-2 text-sm text-muted font-mono border-t border-line"
+    class:list={["mx-auto px-4 py-6 flex flex-wrap justify-between gap-x-4 gap-y-2 text-sm text-muted font-mono border-t border-line", wide ? "max-w-[1200px]" : "max-w-[700px]"]}
   >
     <span class="flex flex-wrap gap-x-3 gap-y-1">
       <span>© {year} Trevor Stevens</span>

@@ -10,6 +10,7 @@
  *   - description?: meta description (has a default)
  *   - windowed?:    home only — wraps content in the AppWindow chrome instead
  *                   of the plain Nav/Footer column (default false)
+ *   - wide?:        wider column for blog pages (default false)
  *   - banner?:      ASCII art dropped into an HTML comment at the top of
  *                   <head> — an easter egg for anyone who reads view-source.
  *                   Per-page override; falls back to DEFAULT_BANNER.
@@ -32,6 +33,7 @@ interface Props {
   title: string;
   description?: string;
   windowed?: boolean;
+  wide?: boolean;
   banner?: string;
 }
 
@@ -39,6 +41,7 @@ const {
   title,
   description = 'Personal site of Trevor Stevens — learning to code, AI/LLMs, and DevOps in public.',
   windowed = false,
+  wide = false,
   banner = DEFAULT_BANNER,
 } = Astro.props;
 
@@ -125,11 +128,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
         </main>
       ) : (
         <div class="flex min-h-screen flex-col">
-          <Nav />
-          <main class="mx-auto w-full max-w-[700px] flex-1 px-4 py-10 sm:py-16">
+          <Nav wide={wide} />
+          <main class:list={["mx-auto w-full flex-1 px-4 py-10 sm:py-16", wide ? "max-w-[1200px]" : "max-w-[700px]"]}>
             <slot />
           </main>
-          <Footer />
+          <Footer wide={wide} />
         </div>
       )
     }

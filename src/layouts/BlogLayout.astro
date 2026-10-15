@@ -1,24 +1,24 @@
 ---
 /**
- * BlogLayout — shell for a single post: BaseLayout chrome + post header
- * (title, date, tags) + the Markdown body in a `.post-body` wrapper that
- * global.css styles like an article.
- *
- * Props:
- *   - post: the blog collection entry; its rendered body comes in via <slot />
+ * BlogLayout — wider article with tags and generated contents in a right sidebar.
+ * Props: post — blog entry; headings — Astro's rendered Markdown headings.
+ * The rendered article body is supplied through the default slot.
  */
+import type { MarkdownHeading } from 'astro';
 import type { CollectionEntry } from 'astro:content';
+import { tagSlug } from '../utils/tags';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  headings: MarkdownHeading[];
 }
 
-const { post } = Astro.props;
+const { post, headings } = Astro.props;
 const { title, description, date, tags } = post.data;
+const contents = headings.filter(({ depth }) => depth === 2 || depth === 3);
 
-// timeZone: 'UTC' or the date shows a day early — a bare YAML date parses as
-// UTC midnight, and we're west of UTC.
+// A bare YAML date is UTC midnight; formatting locally can show the previous day.
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
@@ -27,17 +27,73 @@ const formattedDate = date.toLocaleDateString('en-US', {
 });
 ---
 
-<BaseLayout title={`${title} — Trevor Stevens`} description={description}>
-  <article>
-    <h1 class="text-3xl font-bold">{title}</h1>
-    <p class="mt-2 font-mono text-sm text-muted">
-      <time datetime={date.toISOString()}>{formattedDate}</time>
-      {tags.length > 0 && <span> · {tags.join(', ')}</span>}
-    </p>
-
-    <!-- Rendered Markdown lands here; .post-body (global.css) styles it. -->
-    <div class="post-body mt-8 text-lg text-text">
-      <slot />
-    </div>
-  </article>
+<BaseLayout title={`${title} — Trevor Stevens`} description={description} wide>
+  <div class="blog-layout">
+    <aside class="blog-sidebar font-mono text-sm" aria-label="Article navigation">
+      <a href="/blog" class="text-accent underline">← Back to blog</a>
+      {tags.length > 0 && (
+        <section class="sidebar-rail mt-6" aria-label="Tags">
+          <h2 class="text-xs font-bold text-text">Tags</h2>
+          <ul class="post-tags mt-3 flex flex-wrap gap-2" role="list">
+            {tags.map((tag) => (
+              <li>
+                <a href={`/tags/${tagSlug(tag)}/`} class="block rounded border border-line bg-bg px-2 py-1 text-muted hover:border-accent hover:text-accent focus-visible:text-accent">{tag}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {contents.length > 0 && (
+        <details class="post-contents sidebar-rail mt-6" open>
+          <summary class="cursor-pointer text-xs font-bold text-text">Contents</summary>
+          <nav aria-label="Table of contents" class="mt-3 font-heading text-[13px] leading-relaxed">
+            <ul class="space-y-1" role="list">
+              {contents.map(({ depth, slug, text }) => (
+                <li class:list={{ 'pl-4': depth === 3 }}>
+                  <a href={`#${slug}`} data-post-heading={slug} class="block py-1 text-muted no-underline hover:text-accent hover:underline focus-visible:text-accent focus-visible:underline">{text}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </details>
+      )}
+    </aside>
+    <article class="blog-article">
+      <h1 class="font-heading text-3xl font-bold">{title}</h1>
+      <p class="mt-2 font-mono text-sm text-muted">
+        <time datetime={date.toISOString()}>{formattedDate}</time>
+      </p>
+      <div class="post-body mt-8 text-lg text-text">
+        <slot />
+      </div>
+    </article>
+  </div>
 </BaseLayout>
+
+<style>
+  .sidebar-rail {
+    border-left: 1px solid var(--color-line);
+    padding-left: 1rem;
+  }
+  .post-contents li {
+    position: relative;
+  }
+  .post-contents a[aria-current="location"] {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+  /* Position against the row, so subsection indentation cannot move the rail. */
+  .post-contents a[aria-current="location"]::before {
+    content: '';
+    position: absolute;
+    left: -17px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-accent);
+  }
+</style>
+
+<script>
+  import '../scripts/post-contents';
+</script>

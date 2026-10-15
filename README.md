@@ -43,13 +43,15 @@ src/
 ├── content.config.ts   blog collection schema (frontmatter Astro type-checks)
 ├── data/               generated data (world-dots.json for the About map)
 ├── layouts/            page shells (BaseLayout, BlogLayout)
-├── scripts/            shared theme, Help, and shortcut controls
+├── scripts/            shared theme, Help, shortcuts, and article section tracking
 ├── pages/              file-based routes — each file is a URL
 │   ├── index.astro       → /            (home, terminal "app window")
 │   ├── about.astro       → /about
 │   ├── career.astro      → /career
 │   ├── colophon.astro    → /colophon
-│   └── blog/             → /blog and /blog/<slug>
+│   ├── blog/             → /blog and /blog/<slug>
+│   └── tags/[tag].astro   → /tags/<tag>/
+├── utils/tags.ts        shared tag URL encoding
 └── styles/global.css   Tailwind entry + design tokens (@theme) + blog prose styles
 tests/                 focused control and generated-page checks
 astro.config.mjs        Astro + Tailwind config, site URL, preserved HTML spacing
@@ -71,6 +73,9 @@ tags: [astro, homelab]   # optional
 
 A missing `title` or bad `date` fails the build rather than shipping broken.
 `BlogLayout` supplies the post title; start the body with copy or `##` headings.
+The Contents sidebar is generated from `##` and `###` headings and highlights
+the current section as you scroll. Tags link to matching posts, newest first.
+The blog index lists every tag automatically; no archive files need hand editing.
 
 ## Keyboard and theme controls
 

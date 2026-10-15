@@ -1,0 +1,38 @@
+---
+/**
+ * Tag archive (/tags/<tag>): matching posts, newest first, using existing cards.
+ * Props: tag — original tag label; posts — matching collection entries.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { tagSlug } from '../../utils/tags';
+
+/** Build one archive per distinct tag, preserving its exact label and membership. */
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag: tagSlug(tag) },
+    props: { tag, posts: posts.filter((post) => post.data.tags.includes(tag)) },
+  }));
+}
+
+interface Props {
+  tag: string;
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`Tag: ${tag} — Trevor Stevens`} description={`Posts tagged “${tag}” by Trevor Stevens.`}>
+  <a href="/blog" class="font-mono text-sm text-accent underline">← Back to all posts</a>
+  <h1 class="mt-6 font-heading text-3xl font-bold">Tag: {tag}</h1>
+  <div class="mt-8 flex flex-col gap-4">
+    {posts.map((post) => <PostCard post={post} />)}
+  </div>
+</BaseLayout>
