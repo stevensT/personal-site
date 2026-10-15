@@ -14,15 +14,15 @@ const links = [
 ---
 
 <header>
-  <nav class="max-w-[700px] mx-auto px-4 py-4 flex items-center justify-between">
+  <nav class="max-w-[700px] mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
     <!-- Terminal-style link back home, instead of a plain name/brand. -->
     <a
       href="/"
-      class="font-mono text-sm text-muted transition-colors hover:text-accent"
+      class="whitespace-nowrap font-mono text-sm text-muted transition-colors hover:text-accent"
     >
       <span class="text-accent">stanferd@csar:~$</span> cd ~
     </a>
-    <ul class="flex gap-4 text-sm font-mono">
+    <ul class="flex flex-wrap gap-4 text-sm font-mono">
       {
         links.map((link) => (
           <li>
@@ -32,6 +32,10 @@ const links = [
           </li>
         ))
       }
+      <li>
+        <button type="button" data-help-toggle aria-haspopup="dialog"
+          aria-controls="shortcut-help" class="text-muted hover:text-accent">Help</button>
+      </li>
     </ul>
   </nav>
 </header>

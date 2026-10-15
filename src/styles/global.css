@@ -35,8 +35,8 @@ html[data-theme="light"] {
   --color-bg: #ffffff;       /* window interior */
   --color-elevated: #f3f5f7; /* title/footer bars */
   --color-text: #1f2328;     /* near-black body text */
-  --color-accent: #138a2c;   /* slightly darker green for contrast on white */
-  --color-muted: #6b7280;    /* secondary gray */
+  --color-accent: #0f7625;   /* readable on every light-theme background */
+  --color-muted: #5a6270;    /* secondary text also meets 4.5:1 contrast */
   --color-line: #d0d7de;     /* borders */
 }
 

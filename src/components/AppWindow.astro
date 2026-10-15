@@ -9,8 +9,7 @@
 // Baked in at build time; refreshes on each deploy.
 const year = new Date().getFullYear();
 
-// Footer-bar keybinds. `help` has no href — [h] toggles the overlay — so it
-// stays plain text.
+// Help is a button so it remains available when shortcuts are disabled.
 const footerKeys = [
   { key: 'x', label: 'colophon', href: '/colophon' },
   { key: 'h', label: 'help' },
@@ -42,9 +41,11 @@ const socials = [
       stanferd.dev
     </span>
 
-    <!-- Theme toggle — mirrors [d]. BaseLayout's script hooks this id. -->
+    <!-- Theme toggle — mirrors [d]. site-controls.ts binds this button. -->
     <button
       id="theme-toggle"
+      data-theme-toggle
+      aria-pressed="false"
       type="button"
       aria-label="Toggle light/dark theme"
       class="text-muted transition-colors hover:text-accent"
@@ -107,7 +108,10 @@ const socials = [
                 {k.label}
               </a>
             ) : (
-              k.label
+              <button type="button" data-help-toggle aria-haspopup="dialog"
+                aria-controls="shortcut-help" class="transition-colors hover:text-accent">
+                {k.label}
+              </button>
             )}
           </span>
         ))

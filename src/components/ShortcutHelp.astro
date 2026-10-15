@@ -1,0 +1,52 @@
+---
+/**
+ * ShortcutHelp — native modal with keyboard hints, theme control, and a shortcut
+ * off switch. No props. site-controls.ts binds the controls; the browser handles
+ * Escape, background inactivity, and returning focus after closing.
+ */
+---
+
+<dialog id="shortcut-help" aria-labelledby="shortcut-help-title" class="font-mono text-sm">
+  <div class="mb-4 flex items-center justify-between gap-4">
+    <h2 id="shortcut-help-title" class="text-accent">keyboard shortcuts</h2>
+    <form method="dialog">
+      <button type="submit" class="rounded border border-line px-3 py-1 hover:border-accent">Close</button>
+    </form>
+  </div>
+  <ul class="space-y-1 text-muted">
+    <li><span class="text-accent">[a]</span> about</li>
+    <li><span class="text-accent">[b]</span> blog</li>
+    <li><span class="text-accent">[c]</span> career</li>
+    <li><span class="text-accent">[x]</span> colophon</li>
+    <li><span class="text-accent">[d]</span> toggle dark / light</li>
+    <li><span class="text-accent">[h]</span> toggle this help</li>
+    <li><span class="text-accent">[esc]</span> close</li>
+  </ul>
+  <label class="mt-5 flex items-center gap-2">
+    <input id="shortcuts-enabled" type="checkbox" checked />
+    Enable single-letter shortcuts
+  </label>
+  <p id="shortcut-storage-note" hidden class="mt-2 text-muted">
+    Your browser can't remember this choice. It applies to this page only.
+  </p>
+  <button type="button" data-theme-toggle aria-pressed="false"
+    class="mt-4 rounded border border-line px-3 py-2 hover:border-accent">
+    Light theme
+  </button>
+</dialog>
+
+<style>
+  dialog {
+    margin: auto;
+    width: calc(100% - 2rem);
+    max-width: 22rem;
+    max-height: calc(100% - 2rem);
+    overflow-y: auto;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.5rem;
+    background: var(--color-elevated);
+    color: var(--color-text);
+  }
+  dialog::backdrop { background: rgb(0 0 0 / 70%); }
+</style>

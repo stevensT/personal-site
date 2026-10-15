@@ -1,7 +1,7 @@
 ---
 /**
  * BaseLayout — the shared shell around every page: <head>, site chrome, and
- * the keyboard-nav / theme-toggle / help-overlay scripts at the bottom.
+ * the native Help dialog and shared site-controls script.
  *
  * global.css is imported here (and only here) so Tailwind applies site-wide.
  *
@@ -18,6 +18,7 @@ import '../styles/global.css';
 import AppWindow from '../components/AppWindow.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import ShortcutHelp from '../components/ShortcutHelp.astro';
 
 // Injected raw (set:html) into an HTML comment, so any banner MUST NOT contain
 // `-->` or a stray `--` — it would break out of the comment. All callers pass
@@ -94,9 +95,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       a light-mode visitor never sees a dark flash. Dark is the default, so
       only act when 'light' is saved.
     -->
-    <script is:inline>
-      if (localStorage.getItem("theme") === "light") {
-        document.documentElement.dataset.theme = "light";
+    <script is:inline data-theme-init>
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.dataset.theme = "light";
+        }
+      } catch {
+        // Storage can be blocked; retain the default theme and usable controls.
       }
     </script>
 
@@ -129,100 +134,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       )
     }
 
-    <!-- Help overlay, shown/hidden by [h]. `hidden` keeps it out of the layout
-         and the accessibility tree until then. -->
-    <div
-      id="help-overlay"
-      hidden
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-    >
-      <div
-        class="w-full max-w-xs rounded-lg border border-line bg-elevated p-6 font-mono text-sm"
-      >
-        <p class="mb-3 text-accent">keyboard shortcuts</p>
-        <ul class="space-y-1 text-muted">
-          <li><span class="text-accent">[a]</span> about</li>
-          <li><span class="text-accent">[b]</span> blog</li>
-          <li><span class="text-accent">[c]</span> career</li>
-          <li><span class="text-accent">[x]</span> colophon</li>
-          <li><span class="text-accent">[d]</span> toggle dark / light</li>
-          <li><span class="text-accent">[h]</span> toggle this help</li>
-          <li><span class="text-accent">[esc]</span> close</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Site-wide keyboard nav + theme toggle. Runs once per page load; since
-         every navigation is a full page load, re-binding each time is fine. -->
+    <ShortcutHelp />
     <script>
-      // key -> path. d/h/esc are handled specially below.
-      const ROUTES: Record<string, string> = {
-        a: "/about",
-        b: "/blog",
-        c: "/career",
-        x: "/colophon",
-      };
-
-      const html = document.documentElement;
-      const helpOverlay = document.getElementById("help-overlay");
-
-      /**
-       * Flip dark <-> light and remember the choice. The CSS keys off the
-       * data-theme attribute: present = light, absent = dark (the default).
-       */
-      function toggleTheme(): void {
-        const next = html.dataset.theme === "light" ? "dark" : "light";
-        localStorage.setItem("theme", next);
-        if (next === "light") html.dataset.theme = "light";
-        else delete html.dataset.theme;
-      }
-
-      /** Show/hide the keyboard-shortcut overlay. */
-      function toggleHelp(force?: boolean): void {
-        if (!helpOverlay) return;
-        const show = force ?? helpOverlay.hasAttribute("hidden");
-        helpOverlay.toggleAttribute("hidden", !show);
-      }
-
-      // The title-bar sun icon mirrors the [d] shortcut.
-      document
-        .getElementById("theme-toggle")
-        ?.addEventListener("click", toggleTheme);
-
-      // Clicking the dimmed backdrop (but not the panel) closes help.
-      helpOverlay?.addEventListener("click", (e) => {
-        if (e.target === helpOverlay) toggleHelp(false);
-      });
-
-      document.addEventListener("keydown", (e) => {
-        // Don't hijack browser/OS shortcuts (Ctrl/Cmd/Alt combos).
-        if (e.metaKey || e.ctrlKey || e.altKey) return;
-
-        // Don't fire while the user is typing in a field.
-        const el = e.target as HTMLElement | null;
-        if (
-          el &&
-          (el.tagName === "INPUT" ||
-            el.tagName === "TEXTAREA" ||
-            el.isContentEditable)
-        ) {
-          return;
-        }
-
-        if (e.key === "Escape") {
-          toggleHelp(false);
-          return;
-        }
-
-        const key = e.key.toLowerCase();
-        if (key === "d") {
-          toggleTheme();
-        } else if (key === "h") {
-          toggleHelp();
-        } else if (ROUTES[key]) {
-          window.location.href = ROUTES[key];
-        }
-      });
+      import '../scripts/site-controls';
     </script>
   </body>
 </html>

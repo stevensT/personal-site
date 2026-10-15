@@ -3,7 +3,8 @@
  * schema. A post missing a title or with a bad date fails the build instead
  * of shipping broken.
  */
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({

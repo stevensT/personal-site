@@ -5,9 +5,6 @@ description: "One Obsidian vault, one inbox, and one agent doing the filing. How
 tags: ["second-brain", "homelab", "obsidian", "ai-agents", "claude"]
 ---
 
-# Fourth time's the charm...
-## Building a Second Brain That Actually Stuck
-
 I have built a "second brain" three times. All three died quietly.
 
 The first was an Obsidian vault that lived in my OneDrive so all of my devices could sync to it. From my Windows desktop to my MacBook to my iPhone, I was trying to keep one source of data for all my thoughts, ideas, and notes. Adding and formatting new notes took more time than I ever spent going back and referencing them. It was not worth my time.

@@ -12,9 +12,9 @@
 
 /* SITE */
 
-  Last update: 2026/07/01
+  Last update: 2026/10/14
   Standards: HTML5, CSS
-  Components: Astro 6, Tailwind CSS v4
+  Components: Astro 7, Tailwind CSS v4
   Software: TypeScript (strict), VS Code, Cloudflare Pages, Claude Code
 
   $ you read the humans. nice.
